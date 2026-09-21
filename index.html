@@ -162,19 +162,26 @@
 
   <!-- ==================== CALENDAR MODAL ==================== -->
   <div id="calendar-modal" class="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
-    <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 w-full max-w-md rounded-3xl p-5 sm:p-6 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto no-scrollbar">
+    <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 w-full max-w-md rounded-3xl p-5 sm:p-6 shadow-2xl relative space-y-4 max-h-[92vh] overflow-y-auto no-scrollbar">
+      
+      <!-- Modal Top Header -->
       <div class="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-3">
         <div class="flex items-center gap-2">
           <span class="text-xl">📅</span>
           <h2 class="text-base font-bold text-stone-900 dark:text-stone-100">የኢትዮጵያ ቀን መቁጠሪያ</h2>
         </div>
-        <button onclick="toggleCalendarModal()" class="w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold flex items-center justify-center hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">✕</button>
+        <div class="flex items-center gap-2">
+          <button onclick="resetCalendarToToday()" class="px-2.5 py-1 rounded-xl bg-amber-100/80 dark:bg-stone-800 text-amber-900 dark:text-amber-300 text-xs font-bold hover:bg-amber-200 dark:hover:bg-stone-700 transition-all" title="ወደ ዛሬ ቀን ተመለስ">
+            ዛሬ (Today)
+          </button>
+          <button onclick="toggleCalendarModal()" class="w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold flex items-center justify-center hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">✕</button>
+        </div>
       </div>
 
-      <!-- Current Date Hero Card -->
+      <!-- Selected Date Card -->
       <div class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 flex items-center justify-between">
         <div>
-          <span class="text-xs uppercase tracking-wider font-semibold text-amber-800 dark:text-amber-400">ዛሬ ያለንበት ዕለት</span>
+          <span id="modal-card-label" class="text-xs uppercase tracking-wider font-semibold text-amber-800 dark:text-amber-400">የተመረጠው ዕለት</span>
           <p id="modal-eth-date-large" class="text-xl font-bold text-stone-900 dark:text-stone-100 mt-0.5">መስከረም 11, 2019</p>
           <p id="modal-greg-date" class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">September 21, 2026</p>
         </div>
@@ -190,12 +197,18 @@
         <p id="modal-eth-saint" class="text-stone-700 dark:text-stone-300 leading-relaxed font-semibold">ሐና ወኢያቄም (የእመቤታችን ወላጆች)፤ ፋሲለደስ ሰማዕት።</p>
       </div>
 
-      <!-- Days Grid (Current Ethiopian Month) -->
+      <!-- Month Navigation Toolbar -->
       <div>
-        <div class="flex justify-between items-center mb-2 px-1">
-          <span id="calendar-grid-title" class="text-xs font-bold text-stone-800 dark:text-stone-200">መስከረም 2019</span>
-          <span class="text-[11px] text-stone-400">1 - 30 ቀናት</span>
+        <div class="flex justify-between items-center mb-2.5 px-1">
+          <div class="flex items-center gap-1.5">
+            <button onclick="prevCalMonth()" class="w-7 h-7 rounded-lg bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-bold flex items-center justify-center hover:bg-stone-300 dark:hover:bg-stone-700 text-sm active:scale-95 transition-all" title="የቀደመው ወር">‹</button>
+            <span id="calendar-grid-title" class="text-sm font-bold text-stone-900 dark:text-stone-100 px-1">መስከረም 2019</span>
+            <button onclick="nextCalMonth()" class="w-7 h-7 rounded-lg bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-bold flex items-center justify-center hover:bg-stone-300 dark:hover:bg-stone-700 text-sm active:scale-95 transition-all" title="የሚቀጥለው ወር">›</button>
+          </div>
+          <span id="calendar-month-days-count" class="text-[11px] font-semibold text-stone-400">1 - 30 ቀናት</span>
         </div>
+
+        <!-- Days Grid -->
         <div id="calendar-days-grid" class="grid grid-cols-7 gap-1.5 text-center text-xs font-semibold"></div>
       </div>
     </div>
@@ -482,7 +495,7 @@
 
     const container = document.getElementById('prayer-content-container');
 
-    /* ==================== ETHIOPIAN CALENDAR LOGIC ==================== */
+    /* ==================== ETHIOPIAN CALENDAR ENGINE ==================== */
     const ETH_MONTHS = [
       "መስከረም", "ጥቅምት", "ኅዳር", "ታኅሣሥ", "ጥር", "የካቲት",
       "መጋቢት", "ሚያዝያ", "ግንቦት", "ሰኔ", "ሐምሌ", "ነሐሴ", "ጳጉሜን"
@@ -547,35 +560,121 @@
       };
     }
 
+    function ethiopianToJdn(year, month, day) {
+      return 1723856 + 365 * year + Math.floor(year / 4) + 30 * (month - 1) + day - 1;
+    }
+
+    function jdnToGregorian(jdn) {
+      let l = jdn + 68569;
+      let n = Math.floor((4 * l) / 146097);
+      l = l - Math.floor((146097 * n + 3) / 4);
+      let i = Math.floor((4000 * (l + 1)) / 1461001);
+      l = l - Math.floor((1461 * i) / 4) + 31;
+      let j = Math.floor((80 * l) / 2447);
+      let gd = l - Math.floor((2447 * j) / 80);
+      l = Math.floor(j / 11);
+      let gm = j + 2 - 12 * l;
+      let gy = 100 * (n - 49) + i + l;
+      return new Date(gy, gm - 1, gd);
+    }
+
+    // Active calendar navigation state
+    let calTodayEth = gregorianToEthiopian(new Date());
+    let calViewYear = calTodayEth.year;
+    let calViewMonth = calTodayEth.month;
+    let calSelectedDay = calTodayEth.day;
+
+    function getDaysInEthMonth(year, month) {
+      if (month < 13) return 30;
+      // Pagume has 6 days on Ethiopian leap year (year % 4 === 3)
+      return (year % 4 === 3) ? 6 : 5;
+    }
+
     function initCalendarUI() {
-      const eth = gregorianToEthiopian(new Date());
-      const now = new Date();
-      const gregFormatted = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      calTodayEth = gregorianToEthiopian(new Date());
+      document.getElementById('header-eth-date').textContent = calTodayEth.formatted;
+      renderCalendarView();
+    }
 
-      document.getElementById('header-eth-date').textContent = eth.formatted;
-      document.getElementById('modal-eth-date-large').textContent = eth.formatted;
+    function renderCalendarView() {
+      const totalDays = getDaysInEthMonth(calViewYear, calViewMonth);
+      if (calSelectedDay > totalDays) calSelectedDay = totalDays;
+
+      const monthName = ETH_MONTHS[calViewMonth - 1];
+      document.getElementById('calendar-grid-title').textContent = `${monthName} ${calViewYear}`;
+      document.getElementById('calendar-month-days-count').textContent = `1 - ${totalDays} ቀናት`;
+
+      // Update Top Hero Card based on selected day
+      const isTodaySelected = (calViewYear === calTodayEth.year && calViewMonth === calTodayEth.month && calSelectedDay === calTodayEth.day);
+      document.getElementById('modal-card-label').textContent = isTodaySelected ? "ዛሬ ያለንበት ዕለት" : "የተመረጠው ዕለት";
+      document.getElementById('modal-eth-date-large').textContent = `${monthName} ${calSelectedDay}, ${calViewYear}`;
+      document.getElementById('modal-eth-day-badge').textContent = calSelectedDay;
+
+      // Compute Gregorian date of selected day
+      const jdn = ethiopianToJdn(calViewYear, calViewMonth, calSelectedDay);
+      const gregDate = jdnToGregorian(jdn);
+      const gregFormatted = gregDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
       document.getElementById('modal-greg-date').textContent = gregFormatted;
-      document.getElementById('modal-eth-day-badge').textContent = eth.day;
-      document.getElementById('calendar-grid-title').textContent = `${eth.monthName} ${eth.year}`;
 
-      const saint = ETH_DAILY_COMMEMORATIONS[eth.day] || "ቅዱሳን ጻድቃን ወሰማዕታት።";
+      // Commemoration
+      const saint = ETH_DAILY_COMMEMORATIONS[calSelectedDay] || "ቅዱሳን ጻድቃን ወሰማዕታት።";
       document.getElementById('modal-eth-saint').textContent = saint;
 
+      // Render Days Grid
       const grid = document.getElementById('calendar-days-grid');
       grid.innerHTML = '';
-      const totalDays = eth.month === 13 ? 5 : 30;
 
       for (let d = 1; d <= totalDays; d++) {
-        const isToday = d === eth.day;
-        const cell = document.createElement('div');
-        cell.className = `py-2 rounded-xl border text-center transition-all ${
-          isToday 
-            ? 'bg-amber-700 text-white font-bold border-amber-800 shadow-sm scale-105' 
-            : 'bg-stone-50 dark:bg-stone-800/50 border-stone-200 dark:border-stone-800 text-stone-700 dark:text-stone-300 hover:border-amber-400'
-        }`;
-        cell.innerHTML = `<span>${d}</span>`;
+        const isToday = (calViewYear === calTodayEth.year && calViewMonth === calTodayEth.month && d === calTodayEth.day);
+        const isSelected = (d === calSelectedDay);
+
+        const cell = document.createElement('button');
+        cell.type = 'button';
+        cell.textContent = d;
+
+        if (isSelected) {
+          cell.className = "py-2.5 rounded-xl bg-amber-700 text-white font-bold border border-amber-800 shadow-sm scale-105 transition-all";
+        } else if (isToday) {
+          cell.className = "py-2.5 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 font-bold border border-amber-400 dark:border-amber-700 transition-all hover:scale-102";
+        } else {
+          cell.className = "py-2.5 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-800 text-stone-700 dark:text-stone-300 hover:border-amber-400 dark:hover:border-amber-600 transition-all";
+        }
+
+        cell.onclick = () => {
+          calSelectedDay = d;
+          renderCalendarView();
+        };
+
         grid.appendChild(cell);
       }
+    }
+
+    function prevCalMonth() {
+      if (calViewMonth === 1) {
+        calViewMonth = 13;
+        calViewYear -= 1;
+      } else {
+        calViewMonth -= 1;
+      }
+      renderCalendarView();
+    }
+
+    function nextCalMonth() {
+      if (calViewMonth === 13) {
+        calViewMonth = 1;
+        calViewYear += 1;
+      } else {
+        calViewMonth += 1;
+      }
+      renderCalendarView();
+    }
+
+    function resetCalendarToToday() {
+      calTodayEth = gregorianToEthiopian(new Date());
+      calViewYear = calTodayEth.year;
+      calViewMonth = calTodayEth.month;
+      calSelectedDay = calTodayEth.day;
+      renderCalendarView();
     }
 
     function toggleCalendarModal() {
