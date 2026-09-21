@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="ጸሎትና መጽሐፍ ቅዱስ">
-  <link rel="apple-touch-icon" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhPYqPwFHQemSwjOlAzNnqu5JAakOG00v5zHhtRgsYTHkk-bfbFPA5o-n15ePJN7_HNUf8hirAbcQePweSZ16a4kvf-DVZeJH_PpP5jeB0dCMYOPkxiro0mYC-6ZdBr-q81qnWvFknKzLLZCL357A_TdYYTS58J3xEDJ9PzHJBz4Nf9TILQ3gLCrT0v-MY/s929/cross.png">
+  <link rel="apple-touch-icon" href="_assets/img/cross.png">
 
   <title>የጸሎት መጽሐፍና መጽሐፍ ቅዱስ</title>
 
@@ -49,25 +49,12 @@
     .dark .rubric {
       color: #f87171;
     }
-    .verse-num {
-      color: #b91c1c;
-      font-weight: bold;
-      margin-right: 0.35rem;
-    }
-    .dark .verse-num {
-      color: #f87171;
-    }
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
     .no-scrollbar {
       -ms-overflow-style: none;
       scrollbar-width: none;
-    }
-    /* Bible text formatting */
-    .bible-verse {
-      display: inline;
-      line-height: 1.95;
     }
     .bible-verse-num {
       color: #b91c1c;
@@ -85,9 +72,9 @@
 <body class="bg-[#fcfaf7] text-stone-900 dark:bg-stone-950 dark:text-stone-100 min-h-screen flex flex-col antialiased transition-colors duration-200">
 
   <!-- Header & Top-Level Module Switcher -->
-  <header class="sticky top-0 z-30 bg-[#fcfaf7]/95 dark:bg-stone-950/95 backdrop-blur border-b border-stone-200 dark:border-stone-800 px-4 py-2.5 flex items-center justify-between shadow-sm">
-    <div class="flex items-center space-x-2.5">
-      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhPYqPwFHQemSwjOlAzNnqu5JAakOG00v5zHhtRgsYTHkk-bfbFPA5o-n15ePJN7_HNUf8hirAbcQePweSZ16a4kvf-DVZeJH_PpP5jeB0dCMYOPkxiro0mYC-6ZdBr-q81qnWvFknKzLLZCL357A_TdYYTS58J3xEDJ9PzHJBz4Nf9TILQ3gLCrT0v-MY/s929/cross.png" alt="Cross" class="w-7 h-7 object-contain drop-shadow-xs" />
+  <header class="sticky top-0 z-30 bg-[#fcfaf7]/95 dark:bg-stone-950/95 backdrop-blur border-b border-stone-200 dark:border-stone-800 px-3.5 py-2.5 flex items-center justify-between shadow-sm">
+    <div class="flex items-center space-x-2 sm:space-x-3">
+      <img src="_assets/img/cross.png" alt="Cross" class="w-7 h-7 object-contain drop-shadow-xs" onerror="this.style.display='none'" />
       
       <!-- Prayer vs Bible Toggle -->
       <div class="flex bg-stone-200/80 dark:bg-stone-800 p-0.5 rounded-xl text-xs font-bold">
@@ -98,10 +85,16 @@
           መጽሐፍ ቅዱስ
         </button>
       </div>
+
+      <!-- Ethiopian Calendar Badge Button -->
+      <button onclick="toggleCalendarModal()" class="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-amber-100/70 hover:bg-amber-100 dark:bg-amber-950/40 dark:hover:bg-amber-950/70 border border-amber-300/80 dark:border-amber-800/80 text-amber-900 dark:text-amber-300 text-xs font-semibold shadow-xs transition-all" title="የኢትዮጵያ ቀን መቁጠሪያ ክፈት">
+        <span>📅</span>
+        <span id="header-eth-date">መስከረም 11, 2019</span>
+      </button>
     </div>
 
-    <!-- Reading Controls: Zoom & High-Contrast Mode Toggle -->
-    <div class="flex items-center space-x-2">
+    <!-- Reading Controls -->
+    <div class="flex items-center space-x-1.5 sm:space-x-2">
       <button id="font-decrease" class="p-2 rounded-lg bg-stone-200/70 hover:bg-stone-300 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-bold active:scale-95 text-xs border border-stone-300/80 dark:border-stone-700" title="Decrease font size">A-</button>
       <button id="font-increase" class="p-2 rounded-lg bg-stone-200/70 hover:bg-stone-300 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-bold active:scale-95 text-sm border border-stone-300/80 dark:border-stone-700" title="Increase font size">A+</button>
       <button id="theme-toggle" class="p-2 rounded-xl bg-amber-100/90 dark:bg-stone-800 text-stone-900 dark:text-amber-400 border-2 border-amber-600/60 dark:border-amber-500/70 shadow-sm active:scale-95 transition-all" title="Toggle Dark/Light Mode">
@@ -132,7 +125,6 @@
       </div>
     </nav>
 
-    <!-- Weekly Sub-bar (Mon - Sun Pills) -->
     <div id="weekly-selector-bar" class="hidden bg-stone-50 dark:bg-stone-900/60 border-b border-stone-200 dark:border-stone-800 py-2.5 px-3 overflow-x-auto no-scrollbar">
       <div class="flex space-x-2 min-w-max mx-auto justify-center" id="day-buttons-container"></div>
     </div>
@@ -140,9 +132,7 @@
 
   <!-- ==================== BIBLE NAVIGATION ==================== -->
   <div id="bible-nav-wrapper" class="hidden border-b border-stone-200 dark:border-stone-800 bg-stone-100 dark:bg-stone-900 px-4 py-3 space-y-3">
-    <!-- Testament & Book Dropdown Row -->
     <div class="max-w-2xl mx-auto flex flex-col sm:flex-row gap-2.5 items-stretch">
-      <!-- Testament Selector -->
       <div class="flex bg-stone-200 dark:bg-stone-800 p-1 rounded-xl text-xs font-semibold shrink-0">
         <button id="btn-ot" onclick="filterBooks('OT')" class="py-2 px-4 rounded-lg bg-white dark:bg-stone-950 shadow-sm text-stone-900 dark:text-stone-100 transition-all">
           ብሉይ ኪዳን
@@ -152,14 +142,12 @@
         </button>
       </div>
 
-      <!-- Book Selector Dropdown -->
       <div class="flex-1 min-w-0">
         <select id="bible-book-select" onchange="onBookChange(this.value)" class="w-full bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-900 dark:text-stone-100 py-2 px-3 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-amber-700">
         </select>
       </div>
     </div>
 
-    <!-- Chapter Selector: Edge-to-Edge Scrollable with Smooth Centering -->
     <div class="max-w-2xl mx-auto w-full">
       <div class="overflow-x-auto no-scrollbar py-1.5 px-1 scroll-smooth" id="bible-chapter-scroll-container">
         <div id="bible-chapter-pills" class="inline-flex space-x-1.5 pr-8"></div>
@@ -167,19 +155,117 @@
     </div>
   </div>
 
-  <!-- Reading View Area -->
+  <!-- Main Content Area -->
   <main class="flex-1 max-w-2xl mx-auto w-full px-5 py-6">
     <div id="prayer-content-container" class="space-y-6 leading-relaxed text-base transition-all duration-150"></div>
   </main>
 
-  <footer class="py-4 text-center text-xs text-stone-400 dark:text-stone-600 border-t border-stone-200 dark:border-stone-800">
-    በሰላመ እግዚአብሔር ይደልወነ ይእዜኒ ወዘልፈኒ ለዓለመ ዓለም አሜን።
+  <!-- ==================== CALENDAR MODAL ==================== -->
+  <div id="calendar-modal" class="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 w-full max-w-md rounded-3xl p-5 sm:p-6 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto no-scrollbar">
+      <div class="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">📅</span>
+          <h2 class="text-base font-bold text-stone-900 dark:text-stone-100">የኢትዮጵያ ቀን መቁጠሪያ</h2>
+        </div>
+        <button onclick="toggleCalendarModal()" class="w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold flex items-center justify-center hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">✕</button>
+      </div>
+
+      <!-- Current Date Hero Card -->
+      <div class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 flex items-center justify-between">
+        <div>
+          <span class="text-xs uppercase tracking-wider font-semibold text-amber-800 dark:text-amber-400">ዛሬ ያለንበት ዕለት</span>
+          <p id="modal-eth-date-large" class="text-xl font-bold text-stone-900 dark:text-stone-100 mt-0.5">መስከረም 11, 2019</p>
+          <p id="modal-greg-date" class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">September 21, 2026</p>
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-amber-700 text-white flex flex-col items-center justify-center font-bold shadow-sm">
+          <span id="modal-eth-day-badge" class="text-lg leading-none">11</span>
+          <span class="text-[9px] uppercase tracking-wider font-normal">ቀን</span>
+        </div>
+      </div>
+
+      <!-- Daily Liturgical Saint / Feast -->
+      <div class="p-3.5 rounded-2xl bg-stone-100 dark:bg-stone-800/60 border border-stone-200 dark:border-stone-700/60 text-xs">
+        <span class="font-bold text-amber-800 dark:text-amber-400 block mb-1">የዕለቱ መታሰቢያ (Daily Commemoration)</span>
+        <p id="modal-eth-saint" class="text-stone-700 dark:text-stone-300 leading-relaxed font-semibold">ሐና ወኢያቄም (የእመቤታችን ወላጆች)፤ ፋሲለደስ ሰማዕት።</p>
+      </div>
+
+      <!-- Days Grid (Current Ethiopian Month) -->
+      <div>
+        <div class="flex justify-between items-center mb-2 px-1">
+          <span id="calendar-grid-title" class="text-xs font-bold text-stone-800 dark:text-stone-200">መስከረም 2019</span>
+          <span class="text-[11px] text-stone-400">1 - 30 ቀናት</span>
+        </div>
+        <div id="calendar-days-grid" class="grid grid-cols-7 gap-1.5 text-center text-xs font-semibold"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== QR CODE MODAL ==================== -->
+  <div id="qr-modal" class="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 w-full max-w-sm rounded-3xl p-6 shadow-2xl relative text-center space-y-4">
+      <button onclick="toggleQrModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold flex items-center justify-center hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">✕</button>
+      
+      <div>
+        <h3 class="text-base font-bold text-stone-900 dark:text-stone-100">መተግበሪያውን በስልክዎ ይክፈቱ</h3>
+        <p class="text-xs text-stone-500 dark:text-stone-400 mt-1">የስልክዎን ካሜራ በመጠቀም QR ኮዱን ስካን ያድርጉ</p>
+      </div>
+
+      <div class="p-3 bg-white rounded-2xl inline-block border border-stone-200 shadow-sm mx-auto">
+        <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?data=https://b2tisase.github.io/prayer/&size=180x180&color=1c1917" alt="QR Code" class="w-44 h-44 mx-auto rounded-lg" />
+      </div>
+
+      <p class="text-xs font-mono text-stone-500 dark:text-stone-400 break-all bg-stone-100 dark:bg-stone-800 py-1.5 px-2 rounded-lg">
+        https://b2tisase.github.io/prayer/
+      </p>
+
+      <button onclick="copyAppUrl()" class="w-full py-2.5 px-4 rounded-xl bg-amber-800 hover:bg-amber-900 text-white font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-2">
+        <span>🔗</span>
+        <span>ሊንኩን ቅዳ (Copy Link)</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="py-6 px-4 border-t border-stone-200 dark:border-stone-800 bg-stone-100/70 dark:bg-stone-900/60 mt-auto">
+    <div class="max-w-2xl mx-auto flex flex-col items-center gap-4 text-center">
+      
+      <!-- Sharing & Actions Toolbar -->
+      <div class="flex flex-wrap items-center justify-center gap-2 text-xs">
+        <button onclick="shareApp()" class="flex items-center gap-1.5 py-2 px-3.5 rounded-xl bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 font-semibold text-stone-700 dark:text-stone-200 hover:bg-stone-50 dark:hover:bg-stone-750 active:scale-95 shadow-2xs transition-all">
+          <span>📤</span>
+          <span>አጋራ (Share)</span>
+        </button>
+
+        <button onclick="copyAppUrl()" class="flex items-center gap-1.5 py-2 px-3.5 rounded-xl bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 font-semibold text-stone-700 dark:text-stone-200 hover:bg-stone-50 dark:hover:bg-stone-750 active:scale-95 shadow-2xs transition-all">
+          <span>🔗</span>
+          <span id="copy-btn-label">ሊንክ ቅዳ (Copy)</span>
+        </button>
+
+        <button onclick="toggleQrModal()" class="flex items-center gap-1.5 py-2 px-3.5 rounded-xl bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 font-semibold text-stone-700 dark:text-stone-200 hover:bg-stone-50 dark:hover:bg-stone-750 active:scale-95 shadow-2xs transition-all">
+          <span>📱</span>
+          <span>QR Code</span>
+        </button>
+      </div>
+
+      <!-- Social Messaging Quick Links -->
+      <div class="flex items-center justify-center gap-4 text-stone-500 dark:text-stone-400 text-xs">
+        <a id="share-telegram" href="#" target="_blank" rel="noopener noreferrer" class="hover:text-amber-700 dark:hover:text-amber-400 font-semibold transition-colors">Telegram</a>
+        <span>•</span>
+        <a id="share-whatsapp" href="#" target="_blank" rel="noopener noreferrer" class="hover:text-amber-700 dark:hover:text-amber-400 font-semibold transition-colors">WhatsApp</a>
+        <span>•</span>
+        <a id="share-facebook" href="#" target="_blank" rel="noopener noreferrer" class="hover:text-amber-700 dark:hover:text-amber-400 font-semibold transition-colors">Facebook</a>
+      </div>
+
+      <p class="text-xs text-stone-400 dark:text-stone-600 mt-1">
+        በሰላመ እግዚአብሔር ይደልወነ ይእዜኒ ወዘልፈኒ ለዓለመ ዓለም አሜን።
+      </p>
+    </div>
   </footer>
 
   <script>
-    // --- 1. 66 BIBLE BOOKS CANONICAL CATALOG ---
+    /* ==================== 66-BOOK CANON ==================== */
     const BIBLE_BOOKS = [
-      // Old Testament (ብሉይ ኪዳን 01-39)
       { id: "01", testament: "OT", name: "ኦሪት ዘፍጥረት", chapters: 50 },
       { id: "02", testament: "OT", name: "ኦሪት ዘጸአት", chapters: 40 },
       { id: "03", testament: "OT", name: "ኦሪት ዘሌዋውያን", chapters: 27 },
@@ -219,8 +305,6 @@
       { id: "37", testament: "OT", name: "ትንቢተ ሐጌ", chapters: 2 },
       { id: "38", testament: "OT", name: "ትንቢተ ዘካርያስ", chapters: 14 },
       { id: "39", testament: "OT", name: "ትንቢተ ሚልክያስ", chapters: 4 },
-
-      // New Testament (አዲስ ኪዳን 40-66)
       { id: "40", testament: "NT", name: "የማቴዎስ ወንጌል", chapters: 28 },
       { id: "41", testament: "NT", name: "የማርቆስ ወንጌል", chapters: 16 },
       { id: "42", testament: "NT", name: "የሉቃስ ወንጌል", chapters: 24 },
@@ -250,7 +334,7 @@
       { id: "66", testament: "NT", name: "የዮሐንስ ራእይ", chapters: 22 }
     ];
 
-    // --- 2. PRAYER BOOKS DATA ---
+    /* ==================== PRAYER DATA ==================== */
     const PRAYER_DATA = {
       daily: {
         title: "የዘወትር ጸሎት",
@@ -261,24 +345,12 @@
           { num: "፪", paragraphs: ["አቤቱ እናመስግንሃለን አቤቱ እናከብርሃለን አቤቱ እንገዛልሃለን። አቤቱ ቅዱስ ስምህን እናመስግናለን። ጉልበት ሁሉ የሚሰግድልህ አቤቱ እንሰግድልሃለን አንደበትም ሁሉ ላንተ ይገዛል የአምላኮች አምላክ የጌቶች ጌታ የንጉሦችም ንጉሥ አንተ ነህ። የሰጋም የነፍስም ፈጣሪ አነተ ነህ። እናንተስ በምትጸልዩበት ጊዜ እንዲህ ብላችሁ ጸልዩ ብሎ ቅዱስ ልጅህ እንዳስተማረን እንጠራለሃን።"] },
           { num: "፫", paragraphs: ["<strong class='rubric text-lg block mb-1'>አባታችን ሆይ</strong> አባታችን ሆይ በሰማያት የምትኖር ስምህ ይቀደስ መንግሥትህ ትምጣ ፈቃድህ በሰማይ እንደሆነች እንዲሁም በምድር ትሁን። የዕለት እንጀራችንን ስጠን ዛሬ በደላችንንም ይቅር በለን፤ እኛም የበደሉንን ይቅር እንደምንል። አቤቱ ወደ ፈተናም አታግባን ከክፉ ሁሉ አድነን እንጂ መንግሥት ያንተ ናትና ኃይል ክብር ምስጋናም ለዘለዓለሙ አሜን።"] },
           { num: "፬", paragraphs: ["<strong class='rubric text-lg block mb-1'>ሰላም ለኪ (የእመቤታችን ሰላምታ)</strong> እመቤቴ ቅድስት ድንግል ማርያም ሆይ፤ በመልአኩ በቅዱስ ገብርኤል ሰላምታ ሰላም እልሻለሁ በሃሳብሽ ድንግል ነሽ በሥጋሽም ድንግል ነሽ። የአሸናፊ የእግዚአብሔር እናት ሆይ፤ ላንቺ ሰላምታ ይገባል። ከሴቶች ሁሉ ተለይተሽ አንቺ የተባረክሽ ነሽና የማኅፀንሽም ፍሬ የተባረከ ነው። ፀጋን የተመላሽ ድንግል ሆይ ደስ ይበልሽ እግዚአብሔር ካንቺ ጋር ነውና ከተወደደው ልጅሽ ከጌታችን ከመድኃኒታችን ከኢየሱስ ክርስቶስ ዘንድ ይቅርታን ለምኝልን ኃጢአታችንን ያስተሰርይልን ዘንድ አሜን።"] },
-          { num: "፭", paragraphs: [
-            "<strong class='rubric text-lg block mb-1'>የሃይማኖት ጸሎት</strong> ሁሉን የፈጠረ አንድ አምላክ በሚሆን በእግዚአብሔር አብ እናምናለን። ሰማይንና ምድርን የፈጠረ የሚታየውንና የማይታየውን ዓለም ሳይፈጠር ከርሱ ጋር በነበረ አንድ የአብ ልጅ በሚሆን በአንድ ጌታ በኢየሱስ ክርስቶስ እናምናለን ፥ ከብርሃን የተገኘ ብርሃን ከእውነተኛ አምላክ የተገኘ እውነተኛ አምላክ የተወለደ እንጂ ያልተፈጠረ በባሕርዩ ከአብ ጋር የሚተካከል ሁሉ በእርሱ የሆነ በሰማይም ካለው በምድርም ካለው ያለርሱ ምንም ምን የሆነ የለም ስለኛ ስለሰዎች እኛን ለማዳን ከሰማይ ወረደ በመንፈስ ቅዱስ ግብር ከቅድስት ድንግል ማርያም ፍጹም ሰው ሆነ፣ ደግሞ ስለኛ ተሰቀለ በጴንጤናዊው በጲላጦስ ዘመን እርሱ መከራን ተቀበለ ሞተ ተቀበረ በሦስተኛውም ቀን ከሙታን ተለይቶ ተሰሣ፣ በቅዱሳን መጻሕፍት እንደተጻፈ በክብር በምስጋና ወደሰማይ ዐረገ።",
-            "በአባቱም ቀኝ ተቀመጠ፣ ዳግመኛም በሕያዋንና በሙታን ለመፍረድ በምስጋና ይመጣል ለመንግሥቱም ፍጻሜ የለውም። በመንፈስ ቅዱስም እናምናለን እርሱም ጌታ ሕይወትን የሚሰጥ ከአብ የሠረፀ ከአብ ከወልድ ጋራ በአንድነት እንሰግድለታለን እናመሰግነዋለን እርሱም በነቢያት አድሮ የተናገረ ነው። ከሁሉም በላይ በምትሆን ሐዋርያት በሠሯት በአንዲት ክብርት ቤተ ክርስቲያን እናምናለን። ኃጢአት በሚሠረይባት በአንዲት ጥምቀትም እናምናለን የሙታንንም መነሣት ተስፋ እናደርጋለን የሚመጣውንም ሕይወት ለዘላለሙ።"
-          ] },
+          { num: "፭", paragraphs: ["<strong class='rubric text-lg block mb-1'>የሃይማኖት ጸሎት</strong> ሁሉን የፈጠረ አንድ አምላክ በሚሆን በእግዚአብሔር አብ እናምናለን። ሰማይንና ምድርን የፈጠረ የሚታየውንና የማይታየውን ዓለም ሳይፈጠር ከርሱ ጋር በነበረ አንድ የአብ ልጅ በሚሆን በአንድ ጌታ በኢየሱስ ክርስቶስ እናምናለን ፥ ከብርሃን የተገኘ ብርሃን ከእውነተኛ አምላክ የተገኘ እውነተኛ አምላክ የተወለደ እንጂ ያልተፈጠረ በባሕርዩ ከአብ ጋር የሚተካከል ሁሉ በእርሱ የሆነ በሰማይም ካለው በምድርም ካለው ያለርሱ ምንም ምን የሆነ የለም ስለኛ ስለሰዎች እኛን ለማዳን ከሰማይ ወረደ በመንፈስ ቅዱስ ግብር ከቅድስት ድንግል ማርያም ፍጹም ሰው ሆነ፣ ደግሞ ስለኛ ተሰቀለ በጴንጤናዊው በጲላጦስ ዘመን እርሱ መከራን ተቀበለ ሞተ ተቀበረ በሦስተኛውም ቀን ከሙታን ተለይቶ ተሰሣ፣ በቅዱሳን መጻሕፍት እንደተጻፈ በክብር በምስጋና ወደሰማይ ዐረገ።", "በአባቱም ቀኝ ተቀመጠ፣ ዳግመኛም በሕያዋንና በሙታን ለመፍረድ በምስጋና ይመጣል ለመንግሥቱም ፍጻሜ የለውም። በመንፈስ ቅዱስም እናምናለን እርሱም ጌታ ሕይወትን የሚሰጥ ከአብ የሠረፀ ከአብ ከወልድ ጋራ በአንድነት እንሰግድለታለን እናመሰግነዋለን እርሱም በነቢያት አድሮ የተናገረ ነው። ከሁሉም በላይ በምትሆን ሐዋርያት በሠሯት በአንዲት ክብርት ቤተ ክርስቲያን እናምናለን። ኃጢአት በሚሠረይባት በአንዲት ጥምቀትም እናምናለን የሙታንንም መነሣት ተስፋ እናደርጋለን የሚመጣውንም ሕይወት ለዘላለሙ።"] },
           { num: "፮", paragraphs: ["አሸናፊ እግዚአብሔር ቅዱስ ቅዱስ ቅዱስ ተብለህ ትመሰገናለህ። ምስጋናህም በሰማይ በምድር የመላ ነው። ክርስቶስ ላንተ እንሰግድልሃለን ከሰማያዊ ከቸር አባትህ ጋራ አዳኝ ከሆነ ከመንፈስ ቅዱስ ጋራ እንሰግድልሃለን ወደዚህ ዓለም መጥተህ አድነኸናልና።"] },
-          { num: "፯", paragraphs: [
-            "<span class='rubric'>ለአብ ለወልድ ለመንፈስ ቅዱስ አንዲት ስግደት እሰግዳለው /3 ጊዜ በል/፡፡</span>",
-            "አንድ ሲሆን ሦስት ሦስት ሲሆኑ አንድ በአካል ሦስት ሲሆኑ በመለኮት አንድ ለሚሆኑ እሰግዳለው አምላክን ለወለደች ለእመቤታችን ለድንግል ማርያም እሰግዳለው፣ ዓለምን ለማዳን ሲል ኢየሱስ ክርስቶስ ለተሰቀለበት መስቀልም እስገዳለሁ። መስቀል ኃይላችን ነው ኃይላችን መስቀል ነው የሚያፀናን መስቀል ነው፣ መስቀል ቤዛችን ነው፣ መስቀል የነፍሳችን መዳኛ ነው፣ አይሁድ ይክዱታል እኛ ግን እናምነዋለን ያመነውም እኛም በመስቀሉ እንድናለን፣ ድነናለም።"
-          ] },
-          { num: "፰", paragraphs: [
-            "<span class='rubric'>ለአብ ምስጋና ይገባል፣ ለወልድም ምስጋና ይገባል፣ ለመንፈስ ቅዱስም ምስጋና ይገባል። /3 ጊዜ በል/</span>",
-            "አምላክን ለወለደች ለእመቤታችን ለድንግል ማርያም ምስጋና ይገባል። ለኢየሱስ ክርስቶስ መስቀልም ምስጋና ይገባል። ክርስቶስ በቸርነቱ ያስበን ዘንድ፣ ዳግመኛም በመጣ ጊዜ እንዳያሳፍረን፣ ስሙን ለማመስገን ያነቃን ዘንድ፣ እርሱንም በማምለክ ያጸናን ዘንድ፣ እመቤታችን ጸሎታችንን አሳርጊልን፣ ኃጢአታችንንም አስተሥርዩልን በጌታችን መንበር ፊት ጸሎታችንን አሳርጊልን፣ ይህንን ኅብስት ላበላን ይህንንም ጽዋ ላጠጣን፣ ምግባችንንና ልብሳችንንም ላዘጋጀልን፣ ኃጢአታችንንም ሁሉ ለታገሠልን፣ ክቡር ደሙን ቅዱስ ሥጋውን ለሰጠን፣ እስከዚችም ሰዓት ላደረሰን ለእሱ ለልዑል እግዚአብሔር ፍፁም ምስጋና ይገባል፣ ለወለደችው ለድንግም ምስጋና ይገባል፣ ለክቡር መስቀሉም ምስጋና ይገባል። የእግዚአብሔር ስሙ ፈጽሞ ይመሰገን ዘንድ ዘወትር በየጊዜያቱና በየሰዓቱ ምስጋና ይገባል።"
-          ] },
+          { num: "፯", paragraphs: ["<span class='rubric'>ለአብ ለወልድ ለመንፈስ ቅዱስ አንዲት ስግደት እሰግዳለው /3 ጊዜ በል/፡፡</span>", "አንድ ሲሆን ሦስት ሦስት ሲሆኑ አንድ በአካል ሦስት ሲሆኑ በመለኮት አንድ ለሚሆኑ እሰግዳለው አምላክን ለወለደች ለእመቤታችን ለድንግል ማርያም እሰግዳለው፣ ዓለምን ለማዳን ሲል ኢየሱስ ክርስቶስ ለተሰቀለበት መስቀልም እስገዳለሁ። መስቀል ኃይላችን ነው ኃይላችን መስቀል ነው የሚያፀናን መስቀል ነው፣ መስቀል ቤዛችን ነው፣ መስቀል የነፍሳችን መዳኛ ነው፣ አይሁድ ይክዱታል እኛ ግን እናምነዋለን ያመነውም እኛም በመስቀሉ እንድናለን፣ ድነናለም።"] },
+          { num: "፰", paragraphs: ["<span class='rubric'>ለአብ ምስጋና ይገባል፣ ለወልድም ምስጋና ይገባል፣ ለመንፈስ ቅዱስም ምስጋና ይገባል። /3 ጊዜ በል/</span>", "አምላክን ለወለደች ለእመቤታችን ለድንግል ማርያም ምስጋና ይገባል። ለኢየሱስ ክርስቶስ መስቀልም ምስጋና ይገባል። ክርስቶስ በቸርነቱ ያስበን ዘንድ፣ ዳግመኛም በመጣ ጊዜ እንዳያሳፍረን፣ ስሙን ለማመስገን ያነቃን ዘንድ፣ እርሱንም በማምለክ ያጸናን ዘንድ፣ እመቤታችን ጸሎታችንን አሳርጊልን፣ ኃጢአታችንንም አስተሥርዩልን በጌታችን መንበር ፊት ጸሎታችንን አሳርጊልን፣ ይህንን ኅብስት ላበላን ይህንንም ጽዋ ላጠጣን፣ ምግባችንንና ልብሳችንንም ላዘጋጀልን፣ ኃጢአታችንንም ሁሉ ለታገሠልን፣ ክቡር ደሙን ቅዱስ ሥጋውን ለሰጠን፣ እስከዚችም ሰዓት ላደረሰን ለእሱ ለልዑል እግዚአብሔር ፍፁም ምስጋና ይገባል፣ ለወለደችው ለድንግም ምስጋና ይገባል፣ ለክቡር መስቀሉም ምስጋና ይገባል። የእግዚአብሔር ስሙ ፈጽሞ ይመሰገን ዘንድ ዘወትር በየጊዜያቱና በየሰዓቱ ምስጋና ይገባል።"] },
           { num: "፱", paragraphs: ["እናታችን ማርያም ሆይ ሰላም ላንቺ ይሁን እያልን እንሰግድልሻለን እንማልድሻለን ከአዳኝ አውሬ ታድኝን ዘንድ ተማጽነንብሻል ስለ እናትሽ ስለ ሐና ብለሽ ስለ አባትሽ ስለ ኢያቄም ብለሽ ድንግል ማኅበራችንን ዛሬ ባርኪልን።"] },
-          { num: "፲", paragraphs: [
-            "<strong class='rubric block mb-1'>አምላክን በድንግልና የወለደች የእመቤታችን የማርያም ጸሎት</strong>",
-            "ማርያምም አለች ነፍሴ እግዚአብሔርን ታላቅ ታደርገዋለች መንፈሴም በመድኃኒቴ በእግዚአብሔር ደስ ይላታል። የባሪያይቱን መዋረድ አይቷልና። እነሆ ከዛሬ ጀምሮ ትውልድ ሁሉ ያመሰግኑኛል፡፡ እርሱ ብርቱ የሚሆን ታላቅ ሥራን ለእኔ አድርጓልና ስሙም ቅዱስ ነው። ለሚፈሩትም ምሕረቱ ለልጅ ልጅ ነው ኃይልን በክንዱ አደረገ። በልባቸው አሳብ የሚኮሩ ትዕቢተኞችን በታተናቸው ብርቱዎችንም ከዙፋናቸው አዋረዳቸው። የተራቡትንም በቸርነቱ አጠገባቸው ባለጠጎችንም ቦዶ እጃቸውን ሰደዳቸው ምሕረቱን እንዲያስብ እስራኤል ባርያውን ተቀበለ። ለአባቶቻችን ለአብርሃምና ለዘሩም እስከዘለዓለሙ ድረስ እንደተናገረው።"
-          ] }
+          { num: "፲", paragraphs: ["<strong class='rubric block mb-1'>አምላክን በድንግልና የወለደች የእመቤታችን የማርያም ጸሎት</strong>", "ማርያምም አለች ነፍሴ እግዚአብሔርን ታላቅ ታደርገዋለች መንፈሴም በመድኃኒቴ በእግዚአብሔር ደስ ይላታል። የባሪያይቱን መዋረድ አይቷልና። እነሆ ከዛሬ ጀምሮ ትውልድ ሁሉ ያመሰግኑኛል፡፡ እርሱ ብርቱ የሚሆን ታላቅ ሥራን ለእኔ አድርጓልና ስሙም ቅዱስ ነው። ለሚፈሩትም ምሕረቱ ለልጅ ልጅ ነው ኃይልን በክንዱ አደረገ። በልባቸው አሳብ የሚኮሩ ትዕቢተኞችን በታተናቸው ብርቱዎችንም ከዙፋናቸው አዋረዳቸው። የተራቡትንም በቸርነቱ አጠገባቸው ባለጠጎችንም ቦዶ እጃቸውን ሰደዳቸው ምሕረቱን እንዲያስብ እስራኤል ባርያውን ተቀበለ። ለአባቶቻችን ለአብርሃምና ለዘሩም እስከዘለዓለሙ ድረስ እንደተናገረው።"] }
         ]
       },
       weekly: {
@@ -325,370 +397,398 @@
           verses: [
             "፩፤ የምድር ሁለተኛ የሆንሽ ሰማይ ሆይ የሰማይ ሠራዊት (መላእክት) ንዕድ ነሽ ይላሉ። ድንግል ማርያም የምስራቅ ደጅ ናት። ሙሽራዋ ንጹሕ የሆነ ንጽሕት የሠርግ ቤት ናት። አብ በሰማይ አይቶ እንዳንቺ አላገኘምና አንድ ልጁን ላከው በአንችም ሰው ሆነ። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
             "፪፤ አምላክን የወለድሽ እመቤታችን ሆይ ትውልድ ሁሉ አንችን ብቻ ያመሰግኑሻል። የእግዚአብሔር ሀገር (ከተማ) ሆይ ነቢያት ድንቅ ድንቅ ነገርን ተናገሩልሽ፤ ደስ የተሰኙ የጻድቃን ማደሪያ ሆነሻልና የምድር ነገሥታት ሁሉ በብርሃንሽ ይሄዳሉ። ሕዝቡም ሠራዊቶቻቸውም በብርሃንሽ ይሄዳሉ፤ ማርያም ሆይ ትውልድ ሁሉ ያመሰግኑሻል። ካንቺ ለተወልደውም ይሰግዱለታል ያገኑታልም። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፬፤ የዝናብ ውሃ የታየብሽ የእውነት ደመና አንቺ ነሽ። አብ የልጁ ምልክት አደረገሽ መንፈስ ቅዱስ አደረብሽ የልዑል ኃይል ጋረደሽ፤ ማርያም ሆይ ለዘለዓለም የሚኖር የአብን ልጅ ቃልን የወለድሽልን መጥቶም ከኃጢአት አዳነን። ደስ የተሰኘህ ሆነህ ምሥራችን የተናገርክ መልአኩ ገብርኤል ሆይ የተሰጠህ ክብር ታላቅ ነው ወደእኛ የመጣ የጌታን ልደት ነገርከን ለድንግል ማርያም ጸጋን የተመላሽ ሆይ እግዚአብሔር ካንቺ ጋር ነውና ደስ ይበልሽ ብለህ አበሰርካት። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፭፤ ጸጋን አገኘሽ መንፈስ ቅዱስ አደረብሽ የልዑል ኃይልም ጋረደሽ (ጸለለብሽ) ማርያም ሆይ በእውነት ቅዱሱን ወለድሽ ዓለምን ሁሉ የሚያድን መጥቶ አዳነን። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፮፤ አንደበታችን የድንግልን ሥራ ያመስግናል። ጌታችንና መድኃኒታችን ኢየሱስ ክርስቶስ በዳዊት አገር ከእርስዋ ስለተወለደ አምላክን የወለደች ማርያምን ዛሬ እናመስግናት አሕዛብ ኑ ማርያምን እናመስግናት። እናትና ድንግል ሁለቱንም ሆናለችና። ርኩሰት የሌለብሽና የአብ ቃለ መጥቶ ካንቺ ሰው የሆነ ንጽሕት ድንግል ሆይ ደስ ይበልሽ፣ ነውር የሌለብሽ ፍጽምትና ጉድፍ የሌለብሽ ሙዳይ ሆይ ደስ ይበልሽ። ስለቀደመ ሰው አዳም ሁሉተኛ አዳም የሆነ የክርስቶስ ማደሪያው የምትናገሪው ገነት ሆይ ደስ ይበልሽ። ከአባቱ ያልተለየ አንድ እሱን የተሸከምሽ ሆይ ደስ ይበልሽ። በክብር ጌጥ ሁሉ ያጌጠ እርሱ መጥቶ ሰው የሆነብሽ ንጽሕት የሠርግ ቤት ሆይ ደስ ይበልሽ። የመለኮት እሳት (ባሕርይ) ያላቃጠለሽ ዕፀ ጳጦስ ሆይ ደስ ይበልሽ። በኪሩቤል ላይ የሚቀመጠውን ሰማያዊ መለኮትን በሥጋ የተሸከምሽ ገረድና እናት ድንግልና ሰማይ ሆይ ደስ ይበልሽ። ስለዚህ ንጹሓን ከሆኑ መላእክት ጋር በፍጹም ደስታ ደስ ተሰኝተን እናመስግን በሰማይም ለእግዚአብሔር ምስጋና ይሁን በምድርም ዕርቅ ይሁን እንበል ክብርና ምስጋና ጌትነት ያለው እርሱ አንችን ወድዋልና። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፯፤ ከቅዱሳን ክብር የማርያም ክብር ይበልጣል፣ የአብን ቃል ለመቀበል በተገባ ተገኝታለችና። መላእክት የሚፈሩትን ትጉሆች በሰማይት የሚያመሰግኑትን ድንግል ማርያም በማኅፀንዋ ተሸከመቸው። ይህች ከኪሩቤል ትበልጣልች፣ ከሱራፌልም ትበልጣልች ከሦስቱ አካል ለአንዱ ማደሪያ ሆናለችና። የነቢያት ሀገራቸው ኢየሩሳሌም ይህች ናት። ለቅዱሳን ሁሉ የደስታቸው ማደሪያ ናት። በጨለማና በሞት ጥላ ውስጥ ለሚኖሩ ሰዎች ታላቅ ብርሃን ወጣላቸው። በቅዱሳን ላይ የሚያድር እግዚአብሔር እኛን ለማዳን ልዩ ከሆነች ድንግል ሰው ሆኗዋልና። ኑ ይህን ድንቅ እዩ። ስለ ተገለጠልን ምስጢር ምስጋና አቅርቡ። ሰው የማይሆን ሰው ሆኗልና። ቃል ተዋህዷልና። ጥንት የሌለው ሥጋ ጥንታዊ ቀዳማዊ ሆነ ዘመን የማይቆጠርለት መለኮት ዘመን ተቆጠረለት። የማይታወቅ ተገለጠ የማይታይ ታየ የሕያው የእግዚአብሔር ልጅ በእርግጥ ሰው ሆነ። ትላንት የነበረው ዛሬም ያለው መቼም የሚኖረው ኢየሱስ ክርስቶስ እንሰግድለት እናመስግነው ዘንድ አንድ ባሕርይ ነው። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፰፤ ነቢዩ ሕዝቅኤል ስለ እርስዋ መሰከረ ድንቅ በሆነ ታላቅ ቁልፍ የተዘጋች ደጅ ምሥራቅ አየሁ አለ ከኃያላን ጌታ በቀር ወደ እርስዋ ገብቶ የወጣ የለም። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፱፤ ኆኅትም ደጅም መድኃኒታችንን የወለደች ድንግል ናት። እርሱን ከወለደች በኋላ እንደ ቀድሞ በድንግልና ኖራለችና። መጥቶ ምሕረት ከሌለው ጠላት እጅ ያዳነን ጌታን የወለጅሽ ሆይ የማኅፅንሽ ፍሬ የተባረከ ነው፥ አንቺ ፍጽምትና የተባረክሽ ነሽ የእውነት አምላክ በሆነ በክብር ባለቤት ዘንድ ባለሟልነትን አግኝተሻልና በምድር ላይ ከሚኖር ሁሉ ይልቅ ገናንነትና ክብር ለአንቺ ይገባል። የአብ ቃል መጥቶ በአንቺ ሰው ሆነ። ከሰው ጋርም ተመላለሰ። መሓሪ ይቅር ባይ ሰውን ወዳጅ ነውና በልዩ አመጣጡ አዳነን። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>"
+            "፫፤ የዝናብ ውሃ የታየብሽ የእውነት ደመና አንቺ ነሽ። አብ የልጁ ምልክት አደረገሽ መንፈስ ቅዱስ አደረብሽ የልዑል ኃይል ጋረደሽ፤ ማርያም ሆይ ለዘለዓለም የሚኖር የአብን ልጅ ቃልን የወለድሽልን መጥቶም ከኃጢአት አዳነን። ደስ የተሰኘህ ሆነህ ምሥራችን የተናገርክ መልአኩ ገብርኤል ሆይ የተሰጠህ ክብር ታላቅ ነው ወደእኛ የመጣ የጌታን ልደት ነገርከን ለድንግል ማርያም ጸጋን የተመላሽ ሆይ እግዚአብሔር ካንቺ ጋር ነውና ደስ ይበልሽ ብለህ አበሰርካት። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
+            "፬፤ ጸጋን አገኘሽ መንፈስ ቅዱስ አደረብሽ የልዑል ኃይልም ጋረደሽ (ጸለለብሽ) ማርያም ሆይ በእውነት ቅዱሱን ወለድሽ ዓለምን ሁሉ የሚያድን መጥቶ አዳነን። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
+            "፭፤ አንደበታችን የድንግልን ሥራ ያመስግናል። ጌታችንና መድኃኒታችን ኢየሱስ ክርስቶስ በዳዊት አገር ከእርስዋ ስለተወለደ አምላክን የወለደች ማርያምን ዛሬ እናመስግናት አሕዛብ ኑ ማርያምን እናመስግናት። እናትና ድንግል ሁለቱንም ሆናለችና። ርኩሰት የሌለብሽና የአብ ቃለ መጥቶ ካንቺ ሰው የሆነ ንጽሕት ድንግል ሆይ ደስ ይበልሽ፣ ነውር የሌለብሽ ፍጽምትና ጉድፍ የሌለብሽ ሙዳይ ሆይ ደስ ይበልሽ። ስለቀደመ ሰው አዳም ሁሉተኛ አዳም የሆነ የክርስቶስ ማደሪያው የምትናገሪው ገነት ሆይ ደስ ይበልሽ። ከአባቱ ያልተለየ አንድ እሱን የተሸከምሽ ሆይ ደስ ይበልሽ። በክብር ጌጥ ሁሉ ያጌጠ እርሱ መጥቶ ሰው የሆነብሽ ንጽሕት የሠርግ ቤት ሆይ ደስ ይበልሽ። የመለኮት እሳት (ባሕርይ) ያላቃጠለሽ ዕፀ ጳጦስ ሆይ ደስ ይበልሽ። በኪሩቤል ላይ የሚቀመጠውን ሰማያዊ መለኮትን በሥጋ የተሸከምሽ ገረድና እናት ድንግልና ሰማይ ሆይ ደስ ይበልሽ። ስለዚህ ንጹሓን ከሆኑ መላእክት ጋር በፍጹም ደስታ ደስ ተሰኝተን እናመስግን በሰማይም ለእግዚአብሔር ምስጋና ይሁን በምድርም ሰላም ለሰውም በጎ ፈቃድ እያልን እናመስግነው፤ ኪሩቤልና ሱራፌል ከሚሸከሙት ይልቅ የማርያም ክብር ይበልጣል። ለሰው ሁሉ ፈጣሪ የሆነ እርሱ በማኅፀኗ ዘጠኝ ወር ተሸክማዋለችና። የማይታይ እርሱን ወለደችው፤ እኛ ምእመናን እርሷን እናመስግናት። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
+            "፮፤ የመላእክት አለቃ ቅዱስ ሚካኤል ለማርያም እንዲህ ብሎ አበሰራት፤ ድንግል ማርያም ሆይ ሰላምታ ይገባሻል፤ ጸጋን የተመላሽ ሆይ እግዚአብሔር ከአንቺ ጋር ነው፤ ደስ ይበልሽ። ንጽሕት ድንግል ሆይ አምላክ ከአንቺ ሰው በመሆኑ ታላቅ ደስታና ምስጋና ይገባሻል። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>"
           ]
         },
         thu: {
           name: "ሐሙስ",
           title: "ሐሙስ የሚጸለይ አምላክን የወለደች የእመቤታችን የድንግል ማርያም ምስጋና፤ አራተኛ ክፍል።",
           verses: [
-            "፩፤ ርኵሰት የሌለባት ድንግል ማርያም ሙሴ በበረሃ በነደ እሳት ጫፎቿ ሳይቃጠሉ ያያት ዕፅን ትመስላለች፤ የአብ ቃል በርስዋ ሰው ሆኗልና፣ እሳተ መለኮቱ (የመለኮቱ ባሕርይ) አላቃጠላትምና ከወለደችውም በኋላ ድንግልናዋ አልተለወጠምና ሰውም ቢሆን መለኮቱ አልተለወጠም በዕውነት አምላክ ነውና በዕውነት አምላክ የሆነ እርሱ መጥቶ አዳነን። <span class='rubric'>ቅድስት ሆይ ልምኝልን።</span>",
-            "፪፤ አምላክን የወለድሽ እመቤታችን ሆይ ሁላችን እናገንሻልን። ይቅርታሽ ለሁላችን ይሆን ዘንድ ነውና።",
-            "፫፤ ሔዋን እንጨት በልታ ባደረገችው ዓመፅ በባሕርያችን ያደረ የቀድሞው እርግማን በእርስዋ የጠፋልን አምላክን የወለደች ድንግል ማርያም የሁላችን መመኪያ ናት። ስለ ሔዋን የገነት ደጅ ተዘጋ ዳግመኛም ስለ ድንግል ማርያም ተከፈተልን። ከዕፀ ሕይወት እንበላ ዘንድ አደለን። ይኸውም እኛን ስለመውደድ መጥቶ ያዳነን የክርስቶስ ክብር ሥጋው ክብር ደሙ ነው። ስለ እርሷ ድንቅ ሆኖ የሚነገረውን ይህን ምሥጢር ማወቅ የሚቻለው ምን ልቡና ነው? መናገር የሚቻለው ምን አንደበት ነው? መስማት የሚቻለው ምን ጆሮ ነው? ሰውን የሚወድ እግዚአብሔር አንድ ብቻ የሆነ አምላክነቱ ሳይለወጥ ከዓለም በፊት የነበረ የአብ ቃል ከአብ ዘንድ መጥቶ ልዩ ከሆነች እናቱ ሰው ሆነ። ከወለደችውም በኋላ ድንግልናዋ አልተለወጠም። ስለዚህ አምላክን የወለደች እንደሆነች ታወቀች። የእግዚአብሔር የጥበቡ ስፋት ምን ይጠልቅ? በጻእር በምጥ በልብ ጋር ትወልድ ዘንድ የፈረደባት ማኅፀን የሕይወት መገኛ ሆነች ከባሕርያችን እርግማንን የሚያጠፋልንን ያለ ወንድ ዘር ወለደችልን። ስለዚህም ሰውን የምትወድ ሆይ ክብር ላንተ ይገባል፤ ቸርና የሰውነታችን መድኃኒትም ነህ እያልን እናመስግነው። <span class='rubric'>ቅድስት ሆይ ልምኝልን።</span>",
-            "፬፤ ያለ ወንድ ዘር አምላክን የወለደች ድንግል የማኅፀንዋ ሥራ ምን ይደንቅ? ለዮሴፍ የታየው መልአኩ ከእርሷ በመንፈስ ቅዱስ የሚወለደው ያለ መለወጥ ሰው የሚሆነው የእግዚአብሔር ቃል ነው ብሎ መስክሯልና። ማርያም የዚህ ደስታ ዕፅፍ የሆነ እርሱን ወለደችው። መልአኩ ልጅ ትወልጃለሽ ስሙም አማኑኤል ይባላል አላት። ትርጓሜውም እግዚአብሔር ከእኛ ጋር ሆነ ማለት ነው። ዳግመኛ ወገኖቹን ከኃጢአታቸው የሚያድናቸው ኢየሱስ ይባላል። በችሎታው (በኃይሉ) ያድነን ዘንድ ኃጢአታችንንም ያስተሠርይልን ዘንድ ለዘለዓለም ክብር ይግባውና ሰው የሆነ እርሱን አምላክ እንደሆነ በተረዳ ነገር አውቀነዋልና። ልዩ ከሆነች ድንግል ማርያም ይህ የአምላክ መወለድ ምን ይደንቅ ቃልን ወሰነችው። ልደቱንም ዘር አልቀደመውም። በመወልዱም ንግልናዋን አልለወጠውም። ቃል ከአብ ያለ ድካም ወጣ። ከድንግልም ያለ ሕማም ተወለደ። ሰብአ ስገል ሰገዱለትም አምላክ ነውና ዕጣን አመጡለት ንጉሰም ነውና ወርቅ አመጡለት ስለእኛ በፈቃዱ ለተቀበለው መዳኛችን ለሆነ ሞቱም ከርቤ አመጡለት። ቸር ሰውን ወዳጅ የሆነ አንድ እርሱ ብቻ ነው ። <span class='rubric'>ቅድስት ሆይ ልምኝልን።</span>",
-            "፭፤ ከአዳም ጎን አንዲት ዐፅም ማንሣት ምን ይደንቅ? ከእርሱ ሴትን ፈጠረ የሰው ፍጥረትንም ሁሉ ፈጠረ። ጌታ የአብ ቃል ተሰጠ። ከልዩ ድንግልም ሰው ሆነና አማኑኤል ተባለ ስለዚህ ሁል ጊዜ እርስዋን እንለምን፣ ከተወደደ ልጅዋ ታማልደን ዘንድ። በቅዱሳንና በሊቃነ ጳጳሳት ዘንድ ቸር ናት ደጅ የሚጠኑትን ወልዳላቸዋልችና ለነቢትም ትንቢት የተናገሩለትን ወልዳላቸዋለችና ለሐዋርያትም እስከ ዓለም ዳርቻ በስሙ ያስተማሩለትን ወልዳላቸዋለችና ሰማዕታትና ምዕመናንም የተጋደሉለትን የጥበቡ ጸጋ ብዛት የማይታወቅ ኢየሱስ ክርስቶስ ከእርስዋ ተወልዷልና የይቅርታውን ብዛት መርምረን እንወቅ (እንገፈልግ) መጥቶ አድኖናልና። <span class='rubric'>ቅድስት ሆይ ልምኝልን።</span>",
-            "፮፤ እግዚአብሔር የባሕርይህን ፍሬ በዙፋንህ አኖራለው ብሎ ለዳዊት በእውነት ማለ እይጸጸትም። ጻድቅ እርሱ ዳዊት ክርስቶስ በሥጋ ከእርሱ እንዲወለድ ባመነ ጊዜ የእግዚአብሔርን ቃል ማደሪያ ፈልጎ ያገኝ ዘንድ ወደደ ይህንንም በታላቅ ትጋት ፈጸመ። ከዚህም በኋላ እነሆ በኤፍራታ ሰማነው ብሎ በመንፈስ ቅዱስ አሰምቶ ተናገረ። ይህቺውም አማኑኤል እኛን ለማዳን በሥጋ ይወልድባት ዘንድ የመረጣት የያዕቆብ አምላክ ማደሪያ ናት። ዳግመኛም ከነቢያት አንዱ ሚክያስ አንቺ የኤፍራታ ክፍል የሆንሽ ቤተልሔም ከይሁዳ ነገሥታት መሳፍንት አገር አታንሺም ወገኖቼ እሥራኤልን የሚጠብቃቸው ንጉሥ ካንቺ ይወጣልና፤ ከዛሬ ጀምሮ እስከ ዘለዓለም ድረስ ከቸር አባቱና ከመንፈስ ቅዱስ ጋር ምስጋና ስለተገባው ስለ ክርስቶስ ባንድ መንፈስ ቅዱስ ትንቢት የተናገሩት የነዚህ የሚክያስና የዳዊት ነገር ምን ይረቅ? <span class='rubric'>ቅድስት ሆይ ልምኝልን።</span>",
-            "፯፤ ለእስራኤል የነገሠ ዳዊት ጠላቶቹ በተነሡበት ጊዜ ከቤተልሔም ምንጭ ውኃ ይጠጣ ዘንድ ወደደ የጭፍሮቹ አለቆች ፈጥነው ተነሡና በጠላቶቹ ከተማ ተዋግተው ሊጠጣ የወደደውን አመጡለት። ጻድቅ ዳዊት ግን ጨክነው ሰውነታቸውን ስለ እርሱ ለጦርነት ለሞት አሳልፈው እንደ ሰጡ ባየ ጊዜ ያን ውኃ አፈሰሰ ከእርሱም አልጠጣም ከዚህ በኋላ ለዘለዓለም ጽድቅ ሆኖ ተቆጠረለት። ሰማዕታት የዚችን ዓለም ጣዕም በዕውነት ናቁ ደማቸውንም ስለ እግዚአብሔር አፈሰሱ። ስለ መንግሥተ ሰማያትም መራራ ሞትን ታገሱ። እንደ ይቅርታህ ብዛት ይቅር በለን። <span class='rubric'>ቅድስት ሆይ ልምኝልን።</span>",
-            "፰፤ ከቅድስት ሥላሴ አንዱ ወልድ መዋረዳችንን አይቶ ከሰማየ ሰማያት ወርዶ ባሕርዩን ዝቅ አደረገና መጥቶ በድንግል ማኅፀን አደረ። ከብቻዋ ከኃጢአት በቀርም አንደኛ ሰው ሆነ፤ ነቢያት ትንቢት እንደተናገሩለት በቤተልሔም ተወለደ። ፈጽሞ አዳነን ወገኖቹም አደረገን። <span class='rubric'>ቅድስት ሆይ ልምኝልን።</span>"
+            "፩፤ ሙሴ በሲና ተራራ በነደ እሳት ውስጥ ሆና ሳትቃጠል ያያት ዕፀ ጳጦስ፤ የእግዚአብሔር ቃል በማኅፀንሽ ያደረባት ድንግል ማርያም ምሳሌ ነች፤ እሳት መለኮቱ አላቃጠላትምና። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
+            "፪፤ አብርሃም በድንኳኑ ደጅ ተቀምጦ ሦስት ሰዎችን አይቶ ሰገደላቸው፤ አንዱም አምላክ እንደሆነ አወቀ። እናታችን ማርያምም የአንድነቱና የሦስትነቱ ምሥጢር የተገለጠባት ናት። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
+            "፫፤ የአሮን በትር ሳትተከል ሳትጠጣ ያለ ዘር ለምልማ ያፈራችው ፍሬ ድንግል ማርያም ያለ ዘርዕ ወልድን መውለዷ ምሳሌ ነው። ፍሬዋም ሕይወትን የሚሰጥ ኢየሱስ ክርስቶስ ነው። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
+            "፬፤ እናታችን ማርያም ንጽሕት ናት፤ የብርሃን እናት ናት። የቅዱሳን መመኪያ፣ የኃጥአን መጠጊያ ናትና ሁላችን በስሟ እንመካለን። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>"
           ]
         },
         fri: {
-          name: "ዐርብ",
+          name: "ዓርብ",
           title: "ዓርብ የሚጸለይ አምላክን የወለደች የእመቤታችን የድንግል ማርያም ምስጋና፤ አምስተኛ ክፍል።",
           verses: [
-            "፩፤ ከሴቶሽ ተለይተሽ የተባረክሽ ነሽ። የማኅፀንሽም ፍሬ የተባረክ ነው ያለርኵሰት አምላክን የወለድሽ ድንግል ማርያም ሆይ እውነተኛ ፀሐይ ከአንቺ ወጣልን (ጌታ ተወለደልን) በክንፈ ረድኤቱም አቀረበን። እርሱ ፈጥሮናልና። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፪፤ አምላክን የወለድሽ እመቤታችን ሆይ የብርሃን እናት ነሽና አንችን ብቻሽን በክብር በምስጋና እናገንሻለን።",
-            "፫፤ የተባረክሽ አንቺ ከመላእክት ትበልጫለሽ ከደቂቀ አዳምም ትበልጫልሽ ከድቂቀ አዳምም ትበልጫለሽ። ከአሳቦች ሁሉ ትበልጫልሽ ገናንነትሽን መናገር የሚቻለው ማነው አንቺን የሚመስል የለምና። ማርያም ሆይ መላእክት ያገኑሻል ሱራፌልም ያመሰግኑሻል። በኪሩቤልና በሱራፌል ላይ አድሮ የሚኖር ጌታ መጥቶ በማኅፀንሽ አድሮአልና። ሰውን የሚወድ ወደ እርሱ አቀረበን፣ ክብር ምስጋና ያለው እርሱ የእኛን ሞት ተቀብሎ የእርሱን ሕይወት ለእኛ ሰጠን። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፬፤ የደናግል መመኪያቸው አምላክን የወለድሽ ድንግል ማርያም ሆይ የተባረክሽ ነሽ የማኅፀንሽም ፍሬ የተባረከ ነው። ከዓለም በፊት የነበረ እርሱ ሰው ሆኖዋልና ከአንቺ ተወልደ ሥጋችንን ነሣ (ተዋሐደ) መንፈስ ቅዱስንም ሰጠን። በቸርነቱ ብዛት መሳዮቹ አደረገን ጸጋንና ክብርን ከተቀበሉ ብዙ ሴቶች አንቺ ትበልጫልሽ አምላክን የወለድሽ ማርያም ሆይ ልዑል እግዚአብሔር ያደረብሽ (የከተመበሽ) ረቂቅ ከተማ ነሽ። በኪሩቤልና በሱራፌል ላይ የሚኖረውን ጌታን በመኻል እጅሽ ይዘሸዋልና። በቸርነቱ ብዛት ሥጋዊ ፍጥረትን ሁሉ የሚመግብ እርሱ ጡትሽን ይዞ ጠባ። ይኸውም ሁሉን የሚያድን አምላካችን ነው። ለዘለዓለሙ ይጠብቀናል። እንሰግድለትን እናመስግነው ዘንድ እርሱ ፈጥሮናና። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፭፤ ድንግል ማርያም የሽቱ መኖሪያና የሕይወት ውኃ ምንጭ ናት። የማኅፀንዋ ፍሬ ሰውን ሁሉ አድኖአልና። ከእኛም እርግማንን አጠፋልን። በመካከለችንም ሆኖ በስቀሉ አስታረቀን በልዩ ትንሣኤውም ሰውን ዳንመኛ ወደ ገነት መለሰው። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፮፤ ንጽሕት ድንግል ማርያም የታመነች አምላክን የወለደች ናትሽ። ለሰዎች ልጆችም የምሕረት አማላጅ ናት። ኃጢአታችንን ያስተሠርይልን ዘንድ ወደ ልጅሽ ወደ ክርስቶስ ለምኝልን። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፯፤ ድንግል ማርያም በቤተመቅደስ አሰምታ ትናገር ነበር። መልአኩ ቅድስት ድንግል ሆይ ሰልምታ ይገባሻል ብሎ አክብሮ ከነገረኝ ነገር በቀር ምንም ምን ሌላ የማውቀው እንደሌለኝ እግዚአብሔር ያውቃል አለች። የማይቻለውን ቻልሽ የማይወሰነውንና ምንም ምን የሚወስነው የሌለውን ወሰንሽ። በክብር ሁሉ ላይ ጸጋን የተመላሽ ሆይ ምስጋናሽ ይበዛል ክብርሽ ፍጹም ነው። የአብ ቃል ማደሪያ ሆነሻልና የክርስቲያን ወገኖች ምእመናንን የምትሰበስቢያቸውና ማሕየዊ የሚያድኑን ለሆኑ ለሥላሴ ሰጊድን (መሰገድን) የምያስተምሪላቸው ሰፊ መጋረጃ ሙሴ ያየውን የእሳት ዓምድ የተሸከምሽ አንቺ ነሽ። ይኸውም መጥቶ በማኅፀንሽ ያደረው የእግዚአብሔር ልጅ ነው። ሰማይና ምድር ለማይወስኑት የታመንሽ አንቺ ነሽ። ከምድር ወደሰማይ ለማረግ መሰላል ሆንሽ ብርሃንሽ ከፀሐይ ብርሃን ይበልጣል። ቅዱሳን በፍጹም ደስታ ያዩት ኮከብ ካንቺ የተወልደ ምሥራቅ አንቺ ነሽ። አንቺ ማርያም ግን ጸጋን የተመላሽ ሆይ ደስ ይበልሽ የሚል ቃልን ሰማሽና መጥቶ ያዳነን የፍጥረት ሁሉ ገዥ የሆነ ንጉሥን ወለድሽልን። መሐሪ ነው፣ ሰውንም ወዳጅ ነው። ስለዚህ ማርያም ሆይ የተባረክሽ ነሽ፣ የማኅፀንሽም ፍሬ የተባረከ ነው። ጸጋን የተመላሽ ሆይ እግዚአብሔር ካንቺ ጋር ነውና ደስ ይበልሽ እያልን መልአኩ ገብርኤል እንዳመሰገነሽ እናመሰግንሻለን። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>"
+            "፩፤ ከሴቶች ተለይተሽ የተባረክሽ ነሽ፤ የማኅፀንሽም ፍሬ የተባረከ ነው፤ የብርሃን አምላክን የወለድሽ ድንግል ማርያም ሆይ እውነተኛ ፀሐይ ከአንቺ ወጣልን (ጌታ ተወለደልን)፤ በክንፈ ረድኤቱም አቀረበን። እርሱ ፈጥሮናልና፤ <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
+            "፪፤ አምላክን የወለድሽ እመቤታችን ሆይ የብርሃን እናት ነሽና አንችን ብቻሽን በክብር በምስጋና እናገንዝሻለን። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
+            "፫፤ የተባረክሽ አንቺ ከመላእክት ትበልጫለሽ ከደቂቀ አዳምም ትበልጫለሽ፤ ከሁሉ ትበልጫለሽ፤ ገናንነትሽን መናገር የሚቻለው ማነው፤ የሚመስልሽ የለምና፤ ማርያም ሆይ መላእክት ያከብሩሻል፤ ሱራፌልም ያመሰግኑሻል፤ በኪሩቤልና በሱራፌል ላይ የሚኖረው ጌታ መጥቶ በማኅፀንሽ አድሯልና። ሰውን የወደደ ወደ እርሱ አቀረበን፤ ክብር ምስጋና ያለው እርሱ የእኛን ሞት ተቀብሎ የእርሱን ሕይወት ለእኛ ሰጠን። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
+            "፬፤ የመመኪያችን ዘውድ አምላክን የወለድሽ ድንግል ማርያም ሆይ የተባረክሽ ነሽ የማኅፀንሽም ፍሬ የተባረከ ነው። ከዓለም በፊት የነበረ እርሱ ሰው ሆኖአልና፤ ከአንቺ ተወልዶ ሥጋችንን ነሣ (ተዋሐደ) መንፈስ ቅዱስንም ሰጠን። በቸርነቱ ብዛት መሳዮቹ አደረገን፤ አምላክን የወለድሽ ማርያም ሆይ ታላቅ ክብርን ተቀበልሽ። ልዑል እግዚአብሔር ያደረብሽ ረቂቅ ከተማ ነሽ። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>"
           ]
         },
         sat: {
           name: "ቅዳሜ",
           title: "ቅዳሜ የሚጸለይ አምላክን የወለደች የእመቤታችን የድንግል ማርያም ምስጋና፤ ስድስተኛ ክፍል።",
           verses: [
-            "፩፤ ንጽሕት ነሽ ብርህትም ነሽ። ጌታን በመኻል እጅሽ የያዝሽው ሆይ በሁሉ የተቀደሽ ነሽ። ፍጥረት ሁሉ ቅድስት ሆይ ለምኝልም ብለው እየጮኹ ካንቺ ጋር ደስ ይላቸዋል። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፪፤ ጸጋን የተመላሽ ሆይ ደስ ይበልሽ። ባለሟነትን አግኝተሻልና ደስ ይበልሽ። እግዚአብሔር ካንቺ ጋር ነውና ደስ ይበልሽ።",
-            "፫፤ ግርማ ያለሽ ድንግል ሆይ ገናነትሽን እናመሰግናለን እናደንቃለን። እንደ መልአኩ ገብርኤልም ምስጋና እናቀርብልሻለን የባሕርያችን መዳን በማኅፀንሽ ፍሬ ተገኝቷልና። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፬፤ እንደ ሠርግ ቤት ጉድፍ የሌለብሽ ነሽ መንፈስ ቅዱስ አድሮብሻልና። የልዑል ኃይልም ጸልሎሻልና። ማርያም ሆይ ለዘለዓለም የሚኖር መጥቶ ከኃጢአት ያዳነን የአብ ልጅ ቃልን በእውነት ወለድሽ። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፭፤ ከዳዊት ሥር የተገኘሽ ባሕርይ (ዘር) አንቺ ነሽ መድኃኒታችን ኢየሱስ ክርስቶስን በሥጋ ወልደሽልናልና። ከአብ የተወለደ ከዓለም በፊት የነበረ አንዱ ቃል ራሱን (ባሕርዩን) ሰወረ ካንቺም የተገዥን (ሰውን) አርአያ ነሣ። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፮፤ አምላክን ያለርኵሰት የወለድሽው ሆይ የምድር ሁለተኛ ሰማይን ሆንሽ፣ እውነተኛ ፀሐይ ካንቺ ወጥቶልናልና። እንደነቢያት ትንቢትም ያለዘርና ያለመለወጥ ወደልሽው። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፯፤ ከተለዩ የተለየች የተባልሽ የኪዳን ጽላት ያለብሽ የተሰወረ መና ያለበት የወርቅ መሶብ ያለብሽ ደብተራ ድንኳን አንቺ ነሽ። ይኸውም መና የተባለው መጥቶ በድንግል ማርያም ማኅፀን ያደረው የእግዚአብሔር ልጅ ነው። የአብ ቃል በርስዋ ሰው ሆነ መጥቶ ያዳነን የባሕርይ ንጉሥን በዓለም ውስጥ የወደችው የሚናገር በግ የክርስቶስ እናቱ ገነት ደስ ይላታል ለዘለዓለም የሚኖር የአብ ልጅ እርሱ መጥቶ ከኃጢአት አድኖናልና። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፰፤ የንጉስ ክርስቶስ እናቱን ተባልሽ እርሱን ከወለድሽ በኋላም በድንግልና ኖርሽ። ድንቅ በሆነ ምሥጢርም (ተዋህዶ) አማኑኤልን ወለድሽው ስለዚህም ባለመለወጥ አጸናሽ። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፱፤ እግዚአብሔር በላይዋ ተቀምጦባት ያዕቆብ ያያት መሰላል አንቺ ነሽ በሁሉ በኩል የማይመረመር እርሱን ተፈትሖ በሌለበት ማኅፀንሽ ተሸክመሽዋልና። እኛን ስለማዳን ካንቺ ሰው በሆነ በጌታችን በኢየሱስ ክርስቶስ ዘንድ አማላጅ ሆንሽን። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፲፤ የተባረክሽና ንጽሕት የሆንሽ አዳራሽ ሆይ እነሆ ጌታ የፈጠረውን ዓለም ሁሉ በይቅርታው ብዛት ያድን ዘንድ ካንቺ ወጣ (ተወለደ) ፈጽመን እናመስግነው። ቸርና ሰውን ወዳጅ ነውና። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፲፩፤ ያለርኩሰት ድንግል የሆንሽ ጸጋን የተመላሽ ሆይ ደስ ይበልሽ፤ የዓለም ሁሉ መክበሪያ ንጽሕት ጽዋ ነሽ። የማትጠፊ ፋና ነሽ የማትፈርሽ መቅደስ ነሽ። የቅዱሳን መደገፊያቸው (መጠጊያቸው) የማትለወጪ የሃይማኖት በትር ነሽ፣ ቸር አዳኛችን ወደ ሆነ ልጅሽ ለምኝልን ፈጽሞ ይቅር ይለንና ይምረን ዘንድ ኃጢአታችንንም ያስተሠርይልን ዘንድ። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>"
+            "፩፤ ንጽሕት ድንግል ማርያም ሆይ፤ የጌታ ማደሪያ ታቦት አንቺ ነሽ። በውስጥሽ መና (የሕይወት እንጀራ ክርስቶስ) ተገኘ። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
+            "፪፤ ሰሎሞን ያያት የወርቅ ጽና አንቺ ነሽ፤ በእሳት የተያዘው ፍም የመለኮት እሳት ነው፤ መዓዛውም ያማረ ሽቱ በዓለም ሁሉ ሰረፀ። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
+            "፫፤ የሕይወት ምንጭ አንቺ ነሽ፤ ከአንቺ ሕያው ውሃ የሚፈልቅ ክርስቶስ ወጣ፤ የተጠሙትን ሁሉ አረካ። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>"
           ]
         },
         sun: {
-          name: "እሁድ",
-          title: "በሰንበተ ክርስቲያን እሑድ የሚጸለይ አምላክን የወለደች የእመቤታችን የድንግል ማርያም ምስጋና፤ ሰባተኛ ክፍል።",
+          name: "እሑድ",
+          title: "እሑድ የሚጸለይ አምላክን የወለደች የእመቤታችን የድንግል ማርያም ምስጋና፤ ሰባተኛ ክፍል።",
           verses: [
-            "፩፤ ከሴቶሽ ይልቅ ተለይተሽ የተባረክሽ ሆይ የተወደድሽ ተባልሽ። ከተለዩ የተለየች በውስጧም የኪዳን የሕግ ጽላት ያለባት የምትባይ ሁሉተኛ ክፍል አንቺ ነሽ ኪዳንም በእግዚአብሔር ጣቶሽ የተጻፉ ዓሥሩ ቃላት ናቸው። ያለመለወጥ ካንቺ ሰው የሆነ መድኃኒታችን ኢየሱስ ክርስቶስ ደገኛ ስሙን መጀመሪያ ስሙን አስቀድሞ በየውጣ ነገረን፣ ለአዲስ ኪዳንም አስታራቂ ሆነ። በከበረ ደሙ ፈሳሽነት ወይም መፍሰስ ያመኑትንና ንጹሓን የሆኑትን ወገኖች አነጻቸው። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፪፤ ሁል ጊዜ ንጽሕት የሆንሽ አምላክን የወለድሽ እምቤታችን ሆይ ሁላችን ስለዚህ እናገንሻለን ሰውን በሚወድ በጌታ ዘንድ ይቅርታን እናገኝ ዘንድ እንለምንሻለን ወዳንቺም እናንጋጥጣልን።",
-            "፫፤ ከማይነቅዝ እንጨት የተቀረፀ በውስጥና በውጭ በወርቅ የተለበጠ ታቦት ያለመለየትና ያለመለወጥ ሰው የሆነ የእግዚአብሔርን ቃል ይመስልልናል። ይኸውም መለውጥ የሌለበት ንጹሕ መለኮት ነው። ከአብ ጋር የተካከለ ነው ለንጽሕት በራሱ አበሠራት። በልዩ ጥበብ ያለ ወንድ ዘር እንደ እኛ ሆነ መለኮቱን አዋሕዶ ያለ ርኵሰት ባንቺ ሰው ሆነ። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፬፤ በእግዚአብሔር ሥዕል የተሣሉ ኪሩቤል የሚጋርዱሽ መቅደስ አንቺ ነሽ። ንጽሕት ሆይ ያለመለወጥ ካንቺ ሰው የሆነው ቃል ኃጢአታችንን የሚያስተሠርይልንና አበሳችንን የሚደመስስልን ሆነ። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፭፤ የተሠወረ መና ያለብሽ የንጹሕ ወርቅ መሶብ አንቺ ነሽ መናም ከሰማይ የወረደውና ለዓለም ሁሉ ሕይወትን የሚያድለው ኅብስት ነው። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፮፤ ሁል ጊዜ ብርሃንነት ያለውን ፋና የተሸከምሽ የወርቅ መቅረዝ አንቺ ነሽ ይኸውም ፋና የዓለም ብርሃን ነው። ጥንት ከሌለው ብርሃን የተገኘ ብርሃን ነው። ከእውነተኛ አምላክ የተገኘ እውነተኛ አምላክ ነው። ያለ መለወጥ ከአንቺ ሰው የሆነው ነው። በመምጣቱም (ሰው በመሆኑም) በጨለማና በሞት ጥላ ውስጥ ለምንኖር ለእኛ አበራን በልዩ የጥበቡ ምሥጢር በሥጋዌ የልቦናችንን እግር ወደ ሰላም መንገድ አቀናልን። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፯፤ ቡሩክ ከቤተ መቅደስ ይዞሽ የወጣ እሳትነት ያለውን ፍሕም የተሸከምሽ የወርቅ ማዕጠንት አንቺ ነሽ ፍሕም የተባለውም ኃጢአትን የሚያስተሠርይና በደልን የሚደመስስ ነው። ይኸውም ካንቺ ሰው የሆነና ራሱን የተወደደ መሥዋዕት አድርጎ ያሳረገ የእግዚአብሔር ቃል ነው። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፰፤ የእግዚአብሔርን ቃል የወለድሽልን መልካሟ ርግብ ማርያም ሆይ ደሽ ይበልሽ። ከዕሴይ ሥር የወጣሽ መዐዛሽ ያማረ አበባ አንቺ ነሽ። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፱፤ ሳይተክሏትና ውሃ ሳያጠጧት የለመለመች የአሮን በትር ነበረች ያለ ዘር ሰው ሆኖ ያዳነን እውነተኛ አምላክችንን ክርስቶስን የወለድሽልን ሆይ አንቺ እንደርሷ ነሽ። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፲፤ ጸጋን የተመላሽ ሆይ ከቅዱሳን ሁሉ ይልቅ ትለምኝልን ዘንድ ላንቺ ይገባል። አንቺ ከሊቃነ ጳጳሳት ትበልጫለሽ ከነቢያትም ከመምህራንም ትበልጫለሽ። ከሱራፌልና ከኪሩቤል ግርማ የሚበልጥ የመወደድ ግርማ አለሽ። በእውነቱ የባሕርያችን መመኪያ አንቺ ነሽ። ለሰውነታችንም ሕይወትን የምትለምኝ ነሽ። ወደ ጌታችንና መድኃኒታችን ኢየሱስ ክርስቶስ ለምኝልን ፤ እርሱን በማመን በቀናች ሃይማኖት ያጸናን ዘንድ ይቅርታውንና ምሕረቱን ይሰጠን ዘንድ በቸርነቱ ብዛት ኃጢአታችንን ያስተሠርይልን ዘንድ። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
-            "፲፩፤ <span class='rubric'>ልመናዋ ክብሯ የልጇም ቸርነት ከልጇ ከወዳጇ ከሕዝበ ክርስቲያኑ ጋራ ለዘለዓለሙ ይኑር፤ አሜን።</span>"
+            "፩፤ ይቺ ዕለት የተባረከች ናት፤ ጌታችን ከሙታን ተለይቶ የተነሣባት ናትና። ሞትን ድል አድርጎ ተነሣ፤ ለሰው ልጆችም ሕይወትንና ትንሣኤን ሰጠ። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
+            "፪፤ የብርሃን እናት እመቤታችን ማርያም ሆይ፤ የትንሣኤው ደስታ በአንቺ ተጀመረ። ልጅሽ መድኃኒታችን ኢየሱስ ክርስቶስ ተነሥቶ ሰላሙን ሰጠን። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>",
+            "፫፤ በሰማይ ያሉ መላእክት፣ በምድርም ያሉ የሰው ልጆች በአንድነት ሆነው ምስጋና ያቀርባሉ፤ ሃሌ ሉያ ለክርስቶስ ትንሣኤ ይሁን። <span class='rubric'>ቅድስት ሆይ ለምኝልን።</span>"
           ]
         }
       },
       anqetse: {
         title: "አንቀጸ ብርሃን",
-        sub: "ኢትዮጵያዊው ቅዱስ ያሬድ የደረሰው የአምላክ እናት ምስጋና",
+        sub: "ቅዱስ ያሬድ የደረሰው ምስጋና",
+        intro: "አምላክን በድንግልና የወለደች የእመቤታችን የቅድስት ድንግል ማርያም ድንቅ ምስጋና።",
         sections: [
-          { num: "፩", text: "ኢትዮጵያዊው ቅዱስ ያሬድ የደረሰው የአምላክ እናት ምሥጋና፤ ለእውነተኛ ፈራጅ ለአምላክ እናት ምስጋናና አገልግሎት ይገባታል ።" },
-          { num: "፪", text: "ቅድስት ሆይ ብፅዕት ነሽ የተመሰገንሽና የተባረክሽ ነሽ ። የከበርሽና ከፍ ከፍ ያልሽ ነሽ የብርሃን መውጫ የሕይወት መሰላል ነሽ አምላክን የወለድሽ እመቤታችን ድንግል ማርያም ሆይ ከተለዩ የተለየሽ የመለኮት ማደሪያ ነሽ ከፍጥረት ሁሉ ይልቅ የተከበርሽ ሆይ አብ የወደደሽ ወልድ ያደረብሽ መንፈስ ቅዱስ ያረፈብሽ (የጸለለብሽ) ተባልሽ ። በምድር ላይ ከፍተኛ አርያም የሆንሽ ከሰማያት በላይ ያለ የአርያም የልዑል ስፍራ ምትክ አንቺ ነሽ፤ ቅዱሳን ነቢያት ካህናትና ነገሥታት ያንቺ ምሳሌ አድርገው በውስጧ የኪዳን የሕግ ጽላት ያለባት ቅድስተ ቅዱሳን ከተለዩ የተለየችውን ሠሩ ። <span class='rubric'>ቅድስት ሆይ ልጅሽ ይቅርታውን ያድለን ዘንድ ለምኝልን ።</span>" },
-          { num: "፫", text: "የአምላክ ልጅ ካንቺ ሰው ስለ መሆኑ ስላንቺም ከምድር ወደ አርያም ወደ መንግሥተ ሰማያት የቀረብን ሆን በአንቺና በልጅሽ ስም የቀረብን ሆን ።" },
-          { num: "፬", text: "ዐሥሩ ቃላት በጣቶቹ የተጻፉ የፍጥረት ሁሉ ጌታ ያውም የአምላክ ልጅ በማኅፀንሽ አደረ ። አብ በሥልጣኑ አጸናሽ መንፈስ ቅዱስም ጸለለብሽ አነፃሽ የልዑል ኀይልም አጸናሽ ። ኢየሱስም ያንችን ሥጋ ለበሰ በታላቅ ቃል ጮኾ መጽሐፍ የሕይወት ውኃ ምንጭ ከሆዱ ይፈልቃል እንዳለ ማንም የተጠማ ቢኖር ወደኔ መጥቶ ይጠጣ አለ ። <span class='rubric'>ቅድስት ሆይ ልጅሽ ይቅርታውን ያድለን ዘንድ ለምኝልን ።</span>" },
-          { num: "፭", text: "አብ አስቀድሞ በየውጣ ነገረን የውጣ የተባሉ በእግዚአብሔር ጣቶች የተጻፉ ዐሥሩ ቃላት ናቸው ። ልጅህ ጌታችንና መድኃኒታችን ኢየሱስ ክርስቶስ አንተ ብቻ አባቱ እንደ ሆንክ እርሱም ብቻ ልጅህ እንደ ሆነ አስተማረን ፤ እንዲሁም በሰማይ እናት በምድር አባት የለም ብለን እናምናለን ። መምጣቱን ከአባቱና ከእውነት መንፈስ ከጰራቅሊጦስ በቀር የሚያውቅ ሳይኖር ከሰማይ ወረደ ብለን እናምናለን ። በማኅፀንሽ አደረና ዘጠኝ ወር ተሸከምሽው ሰማያት ደስ ተሰኙ ምድርም ደስ ተሰኘች ። በልጅሽ መወለድ መልአክ ምሥራች ተናገረ ። የሰማይ ጭፍሮችም መላእክትም ምስጋና በሰማይ ለእግዚአብሔር ይሁን በምድርም ላይ ሰላም በሰውም እርሱ በሚፈቅደው እያሉ አመሰገኑ ። እረኞችም በቤተልሔም ካዩትና ከሰሙት የተነሣ አደነቁ ፤ የጥበብ ሰዎች ብልሆች ሰዎች ለልጅሽ ሊሰግዱና አንቺን ሊያገለግሉ ኮከብን አይተው ከሩቅ አገር መጡ ። ከምሥራቅ ጀምሮ መርቶ እስከ ቤተልሔም ያደረሳቸው ያ ኮከብ አንቺ ከሕፃንሽ ጋራ ባለሽበት ቦታ ላይ ቆመ ። እነዚያ ብልሆች ሰዎች አይተው በታላቅ ደስታ ደስ ተሰኙ ። ወደ እርሱ ወደ ሕፃንሽ ገቡና በፊቱ ቆሙ በምድር ላይ ወድቀው ሰገዱለት ። ሣጥናቸውንም ከፈቱና ወርቅ ዕጣን ከርቤን እጅ መንሻ አድርገው አገቡለት ፤ የወገኖችህን ልመናቸውንና መሥዋዕታቸውን ትቀበል ዘንድ ኃጢአታቸውንም ታስተሠርይላቸው ዘንድ የመጣህ አምላካችን ሆይ እጅ መንሻ አገባንልህ ፤ ለከበረ ስምህም ካንተ የተገኘውን ዕጣን አቀረብንልህ አሉት ። <span class='rubric'>ቅድስት ሆይ ልጅሽ ይቅርታውን ያድለን ዘንድ ለምኝልን ።</span>" },
-          { num: "፮", text: "ከንጹሓን ይልቅ ንጽሕት የሆንሽ አንቺ ነሽ ፤ ከማይነቅዝ እንጨት እንደ ተሠራ በወርቅ እንደ ተጌጠና ዋጋው ብዙ በሆነ በሚያበራ ዕንቍ እንደተለበጠ ታቦት በቤተ መቅደስ ውስጥ የኖርሽ የተመረጥሽ ድንግል ነሽ ። እንዲህ ሆነሽ በቤተ መቅደስ ውስጥ ኖርሽ መላእክትም ዘወትር ምግብሽን ያመጡ ነበር ፤ መላእክት እየጐበኙሽ እንዲህ ዓሥራ ሁለት ዓመት ኖርሽ ። መጠጥሽም የሕይወት መጠጥ ነበር ምግብሽም የሰማይ ኅብስት ነበር ። አባትሽ ዳዊት በመሰንቆ አመሰገነ በትንቢት መንፈስም በመንፈስ ቅዱስም በገና እየደረደረ እንዲህ ብሎ ዘመረ ፤ ልጄ ሆይ ስሚ እዪም ጆሮሽንም አዘንብዪ ሕዝብሽንና የአባትሽን ቤት እርሺ ንጉሡም ውበትሽን ይወዳል እርሱ ጌታሽ ነውና ለእርሱም ስገጂ ። <span class='rubric'>ቅድስት ሆይ ልጅሽ ይቅርታውን ያድለን ዘንድ ለምኝልን ።</span>" },
-          { num: "፯", text: "ከንጹሓን ካልበደሉ መላእክት ወገን የሆነና በደል የሌለበት በሁሉ ጌታ ፊት የሚቆም ከደጋጎቹ መላእክት ወገን የሆነ መልአኩ ገብርኤል አበሠረሽ እንዲህም አለሽ ፤ ጸጋን ያገኘሽ ሆይ ደስ ይበልሽ እግዚአብሔር ካንቺ ጋር ነው ከሴቶች ይልቅ የተባረክሽ ነሽ የሁሉ ገዥ በሆነ እግዚአብሔር ዘንድ ባለሟልነትን አገኘሽ ። እነሆ ትፀንሻለሽ ልጅም ትወልጃለሽ ስሙንም ኢየሱስ ትይዋለሽ እርሱ ታላቅ ነው ፤ የልዑል እግዚአብሔር ልጅ ይባላል እግዚአብሔር አምላክም የአባቱን የዳዊትን ዙፋን ይሰጠዋል ለዘላለሙ የያዕቆብን ወገን ይገዛል ለመንግሥቱም ፍጻሜ የለውም ። መንፈስ ቅዱስ ያድርብሻል የልዑል ኀይልም ይጸልልሻል ። ካንቺ የሚወለደውም ቅዱስ ነው ፤ <span class='rubric'>ቅድስት ሆይ ካንቺ የተወለደው ይቅርታውን ያድለን ዘንድ ለምኝልን ።</span>" },
-          { num: "፰", text: "የንጽሕና አዳራሽና ከተለዩ የተለየሽ መቅደስ አንቺ ነሽ ፤ የብርሃን መጋረጃና የማይመረመር የክብር (የጌትነት) ዙፋን አንቺ ነሽ ። ቅድስት ማርያም ሆይ መንፈስ ቅዱስ መጥቶ ስላደረብሽና የልዑል ኃይል ስለ ጸለለብሽ ቅድስተ ቅዱሳን ከተለዩ የተለየች በሆነች መቅደስ መሰልንሽ ። የብርሃን መጋረጃ ነሽ ማለታችን ግን የአብ ቃል የሆነ መድኃኒታችን ኢየሱስ ክርስቶስ በማኅፀንሽ ስለተሠወረ ነው ። ይኸውም በላይ ያለ የሁሉ ጌታ ነው ። መላእክትና የመላእክት አለቆች መናብርት ሥልጣናት አጋዕዝት ኃይላት ሊቃናት መኳንንት የሚያመሰግኑት ነው ፤ ልጅሽንም በዚህ ዓለም በወለድሽው ጊዜ ዓይኖቻቸው ብዙዎች የሆኑ ኪሩቤልና ክንፎቻቸው ስድስት የሆኑ ሱራፌል በበረት ውስጥ ጋረዱልሽ ። የብርሃን ደመናዎችም ከበቡሽ ፤ የመላእክት አለቆች የመላእክት ሠራዊትና የሰማይ ጭፍሮች በመፍራትና በመንቀጥቀጥ በፊትሽ ቆሙ ። በዚህም ዓለም ኪሩቤልና ሱራፌል በሰማያት ካለው ምስጋናቸው ወይም ከቀድሞ ምስጋናቸው ወገን ባልሆነ በሌላ (በአዲስ) ምስጋና አመሰገኑሽ ። ፍጥረትን ሁሉ ሰብስቦ የያዘና ፍጥረቱን ሁሉ የሚመግብ ጌታቸው በብብትሽ (በክንድሽ) ተቀምጦ ጡትሽን እንደ ሕፃን ሲጠባ ባዩ ጊዜ በአርያም ፈለጉና በዚህ ዓለም እንደ ቀድሞው ከአባቱና ከመንፈስ ቅዱስ ጋር አገኙት ፤ የጌታ ትሕትናውን ባዩ ጊዜም ዓይኖቻቸውን ወደ ላይ ወደ አርያም ከፍ ከፍ አደረጉ ፤ ክንፋቸውንም ዘርግተው ለሁሉ ጌታ ላንተ በሰማይ ምስጋና ይገባሃል እያሉ ጌታቸውን አመሰገኑ ። ዳግመኛም በዋሻ በጎል ውስጥ አንቺን ከሕፃንሽ ጋር አይተው በምድር ላይ ሰላም (ፍቅር አንድነት ሆነ) አሉ ። ካንቺ የነሣውን የኛን ሥጋ ለብሶ ባዩት ጊዜም ሰውን ምንኛ ወደደው ብለው ሰገዱለት ። ነቢዩ ዳዊትም እንዲህ ብሎ ትንቢት ተናገረ እግዚአብሔር በሰማይና በማደሪያው ቦታ ሆኖ በምድር ወደሚኖሩት ሁሉ ተመለከተ የሰውንም ልጆች ሁሉ አየ ፤ ንጉሥ ውበትሽን ወደደ ። ለዘላለም ማረፊያዬ ይህች ናት መርጫታለሁና በእርሷ አድራለሁ አለ ። <span class='rubric'>ቅድስት ሆይ ልጅሽ ይቅርታውን ያድለን ዘንድ ለምኝልን ።</span>" },
-          { num: "፱", text: "የተለየሽና ደግ የሆንሽ የተመሰገንሽና የተባረክሽ የከበርሽና ከፍ ከፍ ያልሽ ሆይ ፤ የሕይወት ኅብስት ባለበት በወርቅ መሶብ መሰልንሽ ። የሕይወት ኅብስትም (ይኸውም) በቀኙ ካሉ ጻድቃን ጋር እርሱን ለሚያምን በሃይማኖትና ፈቃደኛ በሆነ ልብ ከእርሱ ለሚበላም ሁሉ ሕይወትን የሚሰጥ ከሰማይ የወረደ ነው ። <span class='rubric'>ቅድስት ሆይ ልጅሽ ይቅርታውን ያድለን ዘንድ ለምኝልን ።</span>" },
-          { num: "፲", text: "የብልሃተኛ እጅ ያልሠራት በውስጧም መብራት የሚያበሩባት የወርቅ መቅረዝ አንቺ ነሽ ፤ ራሱ የአብ ብርሃን ያበራባታል እንጂ ። ከብርሃን የተገኘ ብርሃን ወደ አንቺ መጥቶ አደረ በአምላክነቱም በዓለም ሁሉ አበራ ። ጨለማን ከሰዎች ላይ አራቀ ፤ እኔ የዓለም ብርሃን ነኝ በብርሃኔ እመኑ ብርሃን ሳለላችሁ ተመላለሱ ብሎ በሚያድን ቃሉ አዳነን ። <span class='rubric'>ቅድስት ሆይ ልጅሽ ይቅርታውን ያድለን ዘንድ ለምኝልን ።</span>" },
-          { num: "፲፩", text: "ከሁሉ ጌታ የተገኘ የሁሉ ጌታ ከብርሃን የተገኘ ብርሃን በእውነት የሁሉ ጌታ (የባሕርይ አምላክ ከሆነ የተገኘ እውነተኛው የሁሉ ጌታ) የተወለደ እንጂ የተፈጠረ ያይደለ በህልውና በአኗኗር ከአባቱ ጋር የተካከለ በሰማይና በምድር ያለው ሁሉ በእርሱ የተፈጠረ እኛን ሰዎችን ስለማዳን የወረደው ። ክርስቶስ ከቅድስት ድንግል ማርያም ፈጽሞ ሰው ሆነ ። በመምጣቱም አበራልን ፍጹም ደስታንም አበሠረን ወደ አባቱም አቀረበን (አስታረቀን) ወደ ሕይወት ጐዳናም መራን የዘለዓለም ሕይወትንም ሰጠን ። ነቢዩ ኢሳይያስ እርሱን በማመን ከሕጉ የተነሣ በትንቢት እያደነቀ ሕግህ በምድር ላይ ብርሃን ነው አለ ። አረጋዊ ካህንና የእግዚአብሔርን ትእዛዝ የጠበቀ ጻድቅና ንጹሕ ዘካርያስ ፈጽሞ አደነቀ መናገርም ጀመረና እንዲህ አለ ፤ አምላካችን በይቅርታውና በምሕረቱ በአርያም (በልዕልና) ሆኖ ጐበኘን ። በጨለማና በሞት ጥላ ውስጥ ለሚኖሩትም ብርሃኑን ይገልጥላቸው ዘንድ ተወለደ ፤ ይቅር ይለን ይምረንም ዘንድ እግሮቻችንን ወደ ሰላም መንገድ አቀናልን ። <span class='rubric'>ቅድስት ሆይ ልጅሽ ይቅርታውን ያድለን ዘንድ ለምኝልን ።</span>" },
-          { num: "፲፪", text: "እመቤታችን ሆይ የቅዱሳንና የምእመናንን ሁሉ ጸሎት በማዕጠናቸው ከምድር ወደ ሰማይ በሚያሳርጉ በሰማያውያን የካህናት አለቆች እጆች ውስጥ ባለ የወርቅ ማዕጠንት እንመስልሻለን ። እንዲሁም ስምሽን በመጥራት የሰው ልጆችን ልመና ወደ ልዩ ሦስት አብ ወልድ መንፈስ ቅዱስ ያሳርጋሉ ። የወገኖችሽንም ኃጢአት ታስተሠርይ ዘንድ ከአብ ከወልድ ከመንፈስ ቅዱስ ተፈቅዶልሻል ፤ ለሰዎች ልጆች የዘለዓለም ሕይወት ድልድይ ትሆኚ ዘንድ የዓለም ሁሉ መድኃኒት ሆይ ለምእመናን ወገኖችሽ መድኃኒታቸው ልትባዪ ይገባሻል ። <span class='rubric'>ቅድስት ሆይ ልጅሽ ይቅርታውን ያድለን ዘንድ ለምኝልን ።</span>" },
-          { num: "፲፫", text: "አንቺ የተባረክሽ ዕፅ ነሽ የሕይወትና የደኅንነት ዕፅ ነሽ ፤ በገነት ውስጥ ባለው ዕፀ ሕይወት ፈንታ በዚህ ዓለም የሕይወት ዕፅ ሆንሽ ። ፍሬሽም የሕይወት ፍሬ ነው በሚወዱት (በሚያውቁት) በዓለም ሰዎች ዘንድ የሚሸት መልካም መዓዛ ያለው አበባ ካንቺ ታየ ። ይኸውም ከርቤ፣ ሚዓ፣ ሰሊክ የተባሉ ሽቶች በልብሶችሽ ላይ አሉ ብሎ በበገና ነቢዩ ዳዊት ትንቢት የተናገረልሽ ነው። አባትሽ ሰሎሞንም የአፍንጫሽ መዓዛ እንደ ነጭ ዕጣን መዓዛ ነው አለ ፤ እኅቴ ሙሽራዬ ሆይ የታጠርሽ ተክል ነሽ መንገድሽ የታጠረች ተክል የታተመች ጕድጓድ ናት ። ከሽቱ ቅመም ጋራ ሽቱ አለሽ ቆዕ የሚባል ሽቱ ናርዶስ ከሚባል ሽቱ ጋር አለሽ ፤ ናርዶስ የሚባል ሽቱ መጽርይ ከሚባል ሽቱ ጋራ አለሽ ቀጺመታት ቀናንሞስ የተባሉ ሽቶች ከደጋ ሽቶች ጋራ አሉሽ ፤ ከሽቶች ሁሉ የሚበልጡ ከርቤና ዐልው የሚባሉ ሽቶች ከነዚህ ሁሉ ሽቶች ጋር አሉሽ ። የገነት ፈሳሽ ሆይ ከደጋ የሚፈስ የሕይወት ውኃ መገናኛ ነሽ ። <span class='rubric'>ቅድስት ሆይ ልጅሽ ይቅርታውን ያድለን ዘንድ ለምኝልን ።</span>" },
-          { num: "፲፬", text: "ሳይተክሏትና ውኃ ሳያጠጧት የለመለመች የአሮን በትር በቤተ መቅደስ ነበረች ለካህናት ዝግጁ ያደረጋት ነበረች ። አንቺም በቅድስናና በንጽሕና ጸንተሽ እንደ እርሷ በቤተ መቅደስ ኖርሽ ፤ ከቤተ መቅደስም በክብር በታላቅ ደስታ ወጣሽ ። በእውነት የሕይወት ፍሬ የሆነ ጌታችንና መድኃኒታችን ኢየሱስ ክርስቶስም ካንቺ ተገኘ ። ቅድስት ሆይ ከመልአኩ እንደ ተረዳሽው ከወንድ ያለመገናኘት ልጅን አገኘሽ ፤ መልአኩ መንፈስ ቅዱስ መጥቶ ያድርብሻል የልዑል ኃይልም ይጸልልብሻል ብሎ ነግሮሽ ነበርና ። <span class='rubric'>ቅድስት ሆይ ልጅሽ ይቅርታውን ያድለን ዘንድ ለምኝልን ።</span>" },
-          { num: "፲፭", text: "ጸጋን የተመላሽና የደስታ መገኛ ሆይ በልጅሽ ስም ላመንን ለእኛ ለወንዶችና ለሴቶች አገልጋዮችሽ ትለምኝልን ዘንድ ይገባሻል ። ይልቁንም ዓይኖቻቸው ብዙዎች ከሆኑ ከኪሩቤልና ክንፎቻቸው ስድስት ከሆኑ ከሱራፌል ግርማ የሚበልጥ የመወደድ ግርማ አለሽ ። እነዚያ ፊታቸውን ይሸፍናሉ እግሮቻቸውም የትእምርተ መስቀል አምሳያዎች ናቸው ከልጅሽ መለኮት ከሚወጣው እሳት ይድኑ ዘንድ ፤ አንቺ ግን ለመለኮት ማደሪያ ሆንሽ ። የመለኮት ባሕርይም አላቃጠለሽም የእሳት ነበልባልን ተሸከምሽ ። ሙሴ እንጨትነቷ በእሳት ሳይቃጠል ያያት ዕፀ ጳጦስን መሰልሽ ። ሁለንተናው ፍጹም እሳት የሆነ የኀይላት ጌታ እንደ ዕፀ ጳጦስ አላቃጠለሽም ፤ ለክርስቲያን ወገኖች በእውነት መመኪያ የሆንሽ አንቺ ነሽ ። የአምላክ ልጅ ካንቺ ሰው ስለመሆኑም ባንቺ ከምድር ወደ አርያም የቀረብን ሆንን ። በጸሎትሽ ለሚያምኑ ምሕረትን የምታሰጪ ሆይ ለነፍሳችን ሕይወትን የምትለምኚ ነሽ ፤ ወደ ጌታችንና መድኃኒታችን ኢየሱስ ክርስቶስ መንፈስ ቅዱስን በማመን በቀናች ሃይማኖት ያጸናን ዘንድ ይቅርታውንና ምሕረቱን ይሰጠን ዘንድ በምሕረቱ ብዛት ኃጢአታችንን ያስተሠርይልን ዘንድ ። የሁሉን ጌታ የወለድሽው ሆይ ምስጋና ይገባሻል ፤ ዛሬም ዘወትርም ለዘለዓለምም ምስጋናና ክብር ለአብ ለወልድ ለመንፈስ ቅዱስ ይገባል አሜን ። <span class='rubric'>ልጅሽ ይቅርታውን ያድለን ዘንድ ቅድስት ሆይ ለምኝልን ።</span>" },
-          { num: "፲፮", text: "<span class='rubric'>በቅዱስ ኤፍሬምና በኢትዮጵያዊው ቅዱስ ያሬድ ላይ ያደረ አምላክን የወለደች የእመቤታችን ድንግል ማርያም ልመናዋ ክብሯ የልጅዋም ቸርነት ከሕዝበ ክርስቲያኑ ጋራ ለዘለዓለም ይኑር አሜን ።</span>" }
+          { num: "፩", paragraphs: ["ቅድስትና ንጽሕት የተባረክሽም አንቺ ነሽ፤ የሁሉ ገዢ የሚሆን የአብ ቃል መጥቶ ካንቺ ሰው የሆነብሽ አንቀጸ ብርሃን አንቺ ነሽ። መላእክት በመፍራትና በመንቀጥቀጥ ዙፋኑን የሚከቡትን ንጉሥ በማኅፀንሽ ተሸከምሽው።"] },
+          { num: "፪", paragraphs: ["የእውነተኛ ብርሃን መውጫ የምስራቅ ደጅ አንቺ ነሽ። ነቢያት አስቀድመው የተናገሩልሽ፣ ጻድቃን በናፍቆት የተጠባበቁሽ፣ ለዓለም ሁሉ መድኃኒት የሆነውን ክርስቶስን በድንግልና የወለድሽልን አንቺ ነሽ።"] }
         ]
       },
       yewedeswa: {
         title: "ይዌድስዋ መላእክት",
-        sub: "መላእክት ማርያምን ያመሰግኗታል",
+        sub: "የመላእክት ምስጋና ለእመቤታችን",
+        intro: "መላእክት በማኅፀኗ ያደረውን ጌታ እያደነቁ ያመሰገኗት ምስጋና።",
         sections: [
-          { num: "፩", text: "መላእክት ማርያምን በመንጦላዕት ውስጥ ያመሰግኗታል፤ ሐዳስ ጣዕዋ ላንቺ ምስጋና ይገባሻል እያሉ። መልአክ ማርያምን ቃልን ተቀበይው አላት ካንቺ ዘንድ ይመጣልና በማኅፀንሽም ያድራል። እንዴት ከድሀ ቤት አደረ እንደ ምስኪን ከሰማያት ወርዶ የርስዋን ባሕርይ ባሕርይ አድርጎ ተወለደ?" },
-          { num: "፪", text: "በ፮ኛው ወር ገብርኤል መልአክ ከእግዚአብሔር አብ ዘንድ ተላከ ካንዲት አገር ናዝሬት ገሊላ ከምትባል ለዮሴፍ እጮኛ ከሆነች ከድንግል ዘንድ። የዚች የድንግል ስሟ ማርያም ነው መልአኩ ወደ እርስዋ ገብቶ እንዲህ አላት ደስታ ይገባሻል እግዚአብሔር ከሥጋሽ ሥጋ ከነፍስሽ ነፍስ ነሥቶ ካንቺ ሰው ሆኗልና ከሴቶች ይልቅ አንቺ ቡርክት ነሽ። ከቃሉ አነጋገር አይታ ደነገጠች እንዲህም አለች እንዲህ ያለ የምስጋና እጅ መንሻ ይደረግልኛል? መልአክ እንዲህ አላት ማርያም ሆይ አትፍሪ ከእግዚአብሔር ዘንድ ባለሟልነትን አግኝተሻልና እነሆ ትፀንሻለሽ ትወልጃልሽ ስሙንም ኢየሱስ ትይዋለሽ እርሱም ታላቅ የእግዚአብሔር ልጅ ይባላል እግዚአብሔር አምላክም የዳዊት ያባቱን ዙፋን ይሰጠዋል እርሱም በያዕቆብ ወገን ለዘላለሙ ይነግሣል መንግሥቱም አያልፍም፤ ማርያምም መልአኩን እንዲህ አለችው ይህ ነገር እንደምን ይሆንልኛል እንዘ ኢየአምር ብእሴ መልአኩም እንዲህ አላት፤ መንፈስ ቅዱስ ይጠብቅሻል የልዑል ኃይልም ያድርብሻል ይህ የሚወለደው ከሦስቱ ቅዱስ አንዱ ቅዱስ ነው እነሆ ኤልሣቤጥ ካንቺ ወገን የምትሆን ከሸመገለች ካረጀች በኋላ ፀነሰች ልጅም አገኘች እነሆ ይህ ስድስት ወር ሆነ መካን ሲሏት ለእግዚአብሔር የሚሳነው ነገር የለምና። ማርያምም መልአኩን እንደ ቃልህ ይደረግልኝ እኔ ለእግዚአብሔር ባሪያው ነኝ አለቸው።" },
-          { num: "፫", text: "መልአኩ ገብርኤል ማርያም ድንግል ላንቺ ክብር ምስጋና ይገባሻል አላት። ክብር ምስጋና ይድረስሽ ወላዲተ አምላክ ክብር ምስጋና ይገባሻል፣ ቅድስት ነሽና ክብር ምስጋና ይገባሻል፣ የመለኮት ማደሪያ ነሽና ክብር ምስጋና ይገባሻል፣ የተሸለምሽ ድንኳን ነሽና ክብር ምስጋና ይገባሻል፣ የመላእክት እኅት የሕዝቡ ሁሉ እናት ነሽና ክብር ምስጋና ይገባሻል፣ የሁሉ እመቤት ማርያም ክብር ምስጋና ይጋባሻል፣ የሁሉ ሰላም ማርያም ክብር ምስጋና ይገባሻል፣ ልዑል ማደሪያው ትሆኝ ዘንድ መርጦሻልና ክብር ምስጋና ይገባሻል፣ በወርቅ የተሸለምሽ የርግብ ክንፍ በብር ያጌጥሽ ክብር ምስጋና ይገባሻል፣ ጎኖችሽ በወርቅ አመልማሎ የተሸለሙ ላንቺ ክብር ምስጋና ይገባሻል፣ የምሥራቅ ደጃፍ የብርሃን እናቱ ላንቺ ክብር ምስጋና ይገባሻል፣ ከፀሐይ ሰባት እጅ የምታበሪ ክብርሽ ከአድባራቱ ሁሉ ከፍ ከፍ ያለ ላንቺ ክብር ምስጋና ይገባሻል፣ ማርያም ሆይ ከተመረጡ የተመረጥሽ ከተከበሩ የተከበርሽ ላንቺ ክብር ምስጋና ይገባሻል፤ <br><br>ከጌታችን ከመድኃኒታችን ከኢየሱስ ክርስቶስ ዘንድ ለምኝልን ያድነን ዘንድ ከአባቱ ምስጋና ከቅዱሳን መላእክቶቹ ጋር በመጣ ጊዜ ጻድቅንን በቀኙ ኃጥአንን በግራው ባቆመ ጊዜ እኛን ከሰማዕት እስጢፋኖስ ከመጥምቁ ዮሐንስ እና ከሁሉ ቅዱሳን ከሰማዕታትም ጋር ያቆመን ዘንድ ለምኝልን ለዓለመ ዓለም አሜን፤ ለዘለዓለሙ ይቅር ይበለን።" },
-          { gospel: true, title: "የጌታችን የኢየሱስ ክርስቶስ የጸሎት ቃል (ዮሐ ፲፯፥፰-፲፪)", text: "የሰጠኸኝን ቃል ሰጥቻቸዋለሁና፤ እነርሱም ተቀበሉት፥ ከአንተም ዘንድ እንደ ወጣሁ በእውነት አወቁ፥ አንተም እንደ ላክኸኝ አመኑ። እኔ ስለ እነዚህ እለምናለሁ፤ ስለ ዓለም አልለምንም ስለ ሰጠኸኝ እንጂ፤ የአንተ ናቸውና፤ የእኔም የሆነ ሁሉ የአንተ ነው የአንተውም የእኔ ነው፤ እኔም ስለ እነርሱ ከብሬአለሁ። ከዚህም በኋላ በዓለም አይደለሁም፥ እነርሱም በዓለም ናቸው፥ እኔም ወደ አንተ እመጣለሁ። ቅዱስ አባት ሆይ፥ እነዚህን የሰጠኸኝን እንደ እኛ አንድ እንዲሆኑ በስምህ ጠብቃቸው።" }
+          { num: "፩", paragraphs: ["መላእክት ማርያምን በሰማይ ያመሰግኗታል፤ በምድርም ያሉ የሰው ልጆች ያከብሯታል። ክብሯ ከኪሩቤልና ከሱራፌል ክብር ይበልጣል፤ ሰማይና ምድር የማይወስኑትን እርሱን በማኅፀኗ ወስናዋለችና።"] },
+          { num: "፪", paragraphs: ["ድንግል ማርያም ሆይ ሰላም ላንቺ ይሁን፤ የአብ ቃል እናቱ ሆይ ሰላም ላንቺ ይሁን፤ የመንፈስ ቅዱስ ማደሪያ ሆይ ሰላም ላንቺ ይሁን፤ የዓለም ሁሉ መድኃኒት መገኛ ነሽና ለዘለዓለሙ ምስጋና ይገባሻል።"] }
         ]
       },
       intercession: {
         title: "የምልጃ ጸሎት",
-        sub: "በጸሎት መጽሐፍ መጨረሻ የሚጸለይ የምልጃ ልመና",
-        body: "እመቤቴ ወላዲተ አምላክ ማርያም ሆይ፤ አምላካችን መድኃኒታችን ኢየሱስ ክርስቶስ «የምስጋናሽን መጽሐፍ የጻፈ፣ ያጻፈ፣ በስምሽም የጸለየ እኔ በሕይወት መጽሐፍ ስሙን እጽፈዋለሁ» ሲል ቃል ኪዳን ስለ ሰጠሽ፤ እኔ አገልጋይሽ በትክክል ከተጻፈው ቃል ሳላጐድል ትርፍ ነገር ሳልጨምር፤ የጸሎት መጻሕፍት ሁሉ በቀይ በጥቁር ቀለም አልተጻፉም የሚል የግብዝነት ስሜት እንዳያድርብኝና የቀለም ልዩነት እንዳላደርግ፤ ያለልክ ከመብላትና ከመጠጥ፣ ሴሰኝነት እንድቆጠብ ከከንቱ ልማድ አላቀሽ ጸሎቴን ተቀብለሽ ስሜ በሕይወት መጽሐፍ እንዲጻፍ ታደርጊ ዘንድ እማልድሻለሁ። አሜን።"
+        sub: "በቅዱሳን ሁሉ ጸሎትና ምልጃ ወደ እግዚአብሔር የሚቀርብ ልመና",
+        intro: "አቤቱ ጸሎታችንንና ልመናችንን ስማ፤ በቅዱሳንህም ምልጃ ይቅር በለን።",
+        sections: [
+          { num: "፩", paragraphs: ["አቤቱ በቸርነትህ ብዛት ይቅር በለን፤ እንደ ምሕረትህም ብዛት መተላለፋችንን ደምስስልን። እኛ ባሮችህ በየዕለቱ የበደልነውን ኃጢአት ሁሉ አታስብብን።"] },
+          { num: "፪", paragraphs: ["በእመቤታችን በቅድስት ድንግል ማርያም ጸሎትና አማላጅነት፣ በመጥምቁ ዮሐንስ፣ በቅዱሳን ሐዋርያት፣ በሰማዕታትና በጻድቃን ሁሉ ምልጃ አቤቱ ሀገራችንንና ሕዝባችንን በሰላም ጠብቅልን፤ አሜን።"] }
+        ]
       }
     };
 
-    // State Variables
-    let appMode = 'prayer';
-    let activePrayerTab = 'daily';
+    /* ==================== STATE MANAGEMENT ==================== */
+    let currentMode = 'prayer';
+    let currentPrayerTab = 'daily';
+    let currentDay = 'fri';
     let currentTestament = 'OT';
     let currentBookId = '01';
     let currentChapter = 1;
-    let currentFontSize = 18;
-
-    const DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-    const jsDay = new Date().getDay();
-    let currentDayKey = DAY_KEYS[jsDay];
+    let currentFontSize = 16;
 
     const container = document.getElementById('prayer-content-container');
-    const prayerNavWrapper = document.getElementById('prayer-nav-wrapper');
-    const bibleNavWrapper = document.getElementById('bible-nav-wrapper');
-    const daySelectorBar = document.getElementById('weekly-selector-bar');
-    const dayButtonsContainer = document.getElementById('day-buttons-container');
 
-    // --- 3. MODE SWITCHING (PRAYER vs BIBLE) ---
+    /* ==================== ETHIOPIAN CALENDAR LOGIC ==================== */
+    const ETH_MONTHS = [
+      "መስከረም", "ጥቅምት", "ኅዳር", "ታኅሣሥ", "ጥር", "የካቲት",
+      "መጋቢት", "ሚያዝያ", "ግንቦት", "ሰኔ", "ሐምሌ", "ነሐሴ", "ጳጉሜን"
+    ];
+
+    const ETH_DAILY_COMMEMORATIONS = {
+      1: "ርእሰ ዐውደ ዓመት (ቅዱስ ዮሐንስ መጥምቅ)፤ ቅዱስ ራጉኤል።",
+      2: "ቅዱስ ዮሐንስ መጥምቅ፤ አባ ጓጉዋ።",
+      3: "አባ አንበሳ፤ ቅድስት ሶፍያ።",
+      4: "ቅዱስ ዮሐንስ ወንጌላዊ (ወልደ ነጎድጓድ)።",
+      5: "ቅዱስ ጴጥሮስ ወጳውሎስ፤ አቡነ ገብረ መንፈስ ቅዱስ።",
+      6: "ቅድስት አርሴማ፤ ኢየሱስ ክርስቶስ ደብረ ቍስቋም የገባበት።",
+      7: "ቅዱስ አትናቴዎስ ሐዋርያዊ፤ አባ ጊዮርጊስ ዘጋስጫ።",
+      8: "አባ ኪሮስ፤ አባ ዮሐንስ ካህን።",
+      9: "ቅዱስ ቶማስ ሐዋርያ፤ ሠለስቱ ምዕት (፫፻፲፰ቱ ሊቃውንት)።",
+      10: "ቅዱስ ፊልጶስ ሐዋርያ፤ መስቀለ ክርስቶስ የተገኘበት።",
+      11: "ሐና ወኢያቄም (የእመቤታችን ወላጆች)፤ ፋሲለደስ ሰማዕት።",
+      12: "ቅዱስ ሚካኤል ሊቀ መላእክት፤ አባ ሳሙኤል ዘዋልድባ።",
+      13: "ቅዱስ ሩፋኤል ሊቀ መላእክት፤ ተአምረ ባስልዮስ።",
+      14: "አባ አረጋዊ (ዘሚካኤል)፤ ቅዱስ ገብረ ክርስቶስ።",
+      15: "ቅዱስ ቂርቆስና እናቱ ቅድስት ኢየሉጣ።",
+      16: "ኪዳነ ምሕረት (የእመቤታችን ቃል ኪዳን)።",
+      17: "በዓለ መስቀል (ክቡር መስቀሉ የታየበት)፤ እስጢፋኖስ ቀዳሜ ሰማዕት።",
+      18: "ቅዱስ ፊልጶስ፤ ኤዎስጣቴዎስ ሰማዕት።",
+      19: "ቅዱስ ገብርኤል ሊቀ መላእክት።",
+      20: "ሕንፀተ ቤተ መቅደስ (ቅዱስ ቴዎድሮስ)።",
+      21: "እመቤታችን ቅድስት ድንግል ማርያም (ማኅደረ መለኮት)።",
+      22: "ቅዱስ ዑራኤል ሊቀ መላእክት፤ ደቅስዮስ ሊቀ ጳጳስ።",
+      23: "ቅዱስ ጊዮርጊስ ሊቀ ሰማዕታት።",
+      24: "አቡነ ተክለ ሃይማኖት (ጻድቅ መነኮስ)።",
+      25: "ቅዱስ መርቆሬዎስ ሰማዕት።",
+      26: "ቅዱስ ቶማስ ሐዋርያ።",
+      27: "መድኃኔዓለም (አዳኝ ጌታችን ኢየሱስ ክርስቶስ)።",
+      28: "አማኑኤል ቸር አምላካችን፤ አብርሃም ይስሐቅ ያዕቆብ።",
+      29: "በዓለ ወልድ (እግዚአብሔር አብ፤ ልደተ ክርስቶስ)።",
+      30: "ቅዱስ ማርቆስ ወንጌላዊ፤ መጥምቀ መለኮት ዮሐንስ።"
+    };
+
+    function gregorianToEthiopian(date = new Date()) {
+      const gy = date.getFullYear();
+      const gm = date.getMonth() + 1;
+      const gd = date.getDate();
+
+      const a = Math.floor((14 - gm) / 12);
+      const y = gy + 4800 - a;
+      const m = gm + 12 * a - 3;
+      const jdn = gd + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+
+      const ethJdnOffset = 1723856;
+      const r = (jdn - ethJdnOffset) % 1461;
+      const n = (r % 365) + 365 * Math.floor(r / 1460);
+      const ethYear = 4 * Math.floor((jdn - ethJdnOffset) / 1461) + Math.floor(r / 365) - Math.floor(r / 1460);
+      const ethMonth = Math.floor(n / 30) + 1;
+      const ethDay = (n % 30) + 1;
+
+      return {
+        year: ethYear,
+        month: ethMonth,
+        monthName: ETH_MONTHS[ethMonth - 1] || "መስከረም",
+        day: ethDay,
+        formatted: `${ETH_MONTHS[ethMonth - 1] || "መስከረም"} ${ethDay}, ${ethYear}`
+      };
+    }
+
+    function initCalendarUI() {
+      const eth = gregorianToEthiopian(new Date());
+      const now = new Date();
+      const gregFormatted = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+      document.getElementById('header-eth-date').textContent = eth.formatted;
+      document.getElementById('modal-eth-date-large').textContent = eth.formatted;
+      document.getElementById('modal-greg-date').textContent = gregFormatted;
+      document.getElementById('modal-eth-day-badge').textContent = eth.day;
+      document.getElementById('calendar-grid-title').textContent = `${eth.monthName} ${eth.year}`;
+
+      const saint = ETH_DAILY_COMMEMORATIONS[eth.day] || "ቅዱሳን ጻድቃን ወሰማዕታት።";
+      document.getElementById('modal-eth-saint').textContent = saint;
+
+      const grid = document.getElementById('calendar-days-grid');
+      grid.innerHTML = '';
+      const totalDays = eth.month === 13 ? 5 : 30;
+
+      for (let d = 1; d <= totalDays; d++) {
+        const isToday = d === eth.day;
+        const cell = document.createElement('div');
+        cell.className = `py-2 rounded-xl border text-center transition-all ${
+          isToday 
+            ? 'bg-amber-700 text-white font-bold border-amber-800 shadow-sm scale-105' 
+            : 'bg-stone-50 dark:bg-stone-800/50 border-stone-200 dark:border-stone-800 text-stone-700 dark:text-stone-300 hover:border-amber-400'
+        }`;
+        cell.innerHTML = `<span>${d}</span>`;
+        grid.appendChild(cell);
+      }
+    }
+
+    function toggleCalendarModal() {
+      const modal = document.getElementById('calendar-modal');
+      modal.classList.toggle('hidden');
+    }
+
+    function toggleQrModal() {
+      const modal = document.getElementById('qr-modal');
+      modal.classList.toggle('hidden');
+    }
+
+    /* ==================== SHARING & SOCIAL ==================== */
+    function shareApp() {
+      const shareData = {
+        title: 'የጸሎት መጽሐፍና መጽሐፍ ቅዱስ',
+        text: 'የኢትዮጵያ ኦርቶዶክስ ተዋሕዶ የዘወትር ጸሎት እና 66ቱ መጻሕፍት መተግበሪያ፡',
+        url: window.location.href.split('#')[0]
+      };
+      if (navigator.share) {
+        navigator.share(shareData).catch(() => {});
+      } else {
+        copyAppUrl();
+      }
+    }
+
+    function copyAppUrl() {
+      const url = window.location.href.split('#')[0];
+      navigator.clipboard.writeText(url).then(() => {
+        const btn = document.getElementById('copy-btn-label');
+        if (btn) {
+          const original = btn.textContent;
+          btn.textContent = 'ሊንኩ ተቀድቷል! ✓';
+          setTimeout(() => { btn.textContent = original; }, 2200);
+        }
+      });
+    }
+
+    function initSocialLinks() {
+      const url = encodeURIComponent(window.location.href.split('#')[0]);
+      const text = encodeURIComponent("የኢትዮጵያ ኦርቶዶክስ ተዋሕዶ የዘወትር ጸሎት እና 66ቱ መጻሕፍት መተግበሪያ፡ ");
+      
+      const tg = document.getElementById('share-telegram');
+      const wa = document.getElementById('share-whatsapp');
+      const fb = document.getElementById('share-facebook');
+
+      if (tg) tg.href = `https://t.me/share/url?url=${url}&text=${text}`;
+      if (wa) wa.href = `https://api.whatsapp.com/send?text=${text}%20${url}`;
+      if (fb) fb.href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+    }
+
+    /* ==================== THEME & CONTROLS ==================== */
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+
+    function updateThemeUI(isDark) {
+      themeIcon.textContent = isDark ? '☀️' : '🌙';
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+
+    const savedTheme = localStorage.getItem('app-theme') || 'dark';
+    updateThemeUI(savedTheme === 'dark');
+
+    themeToggle.onclick = () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('app-theme', isDark ? 'dark' : 'light');
+      themeIcon.textContent = isDark ? '☀️' : '🌙';
+    };
+
+    document.getElementById('font-increase').onclick = () => {
+      if (currentFontSize < 34) {
+        currentFontSize += 2;
+        container.style.fontSize = `${currentFontSize}px`;
+      }
+    };
+
+    document.getElementById('font-decrease').onclick = () => {
+      if (currentFontSize > 14) {
+        currentFontSize -= 2;
+        container.style.fontSize = `${currentFontSize}px`;
+      }
+    };
+
+    /* ==================== MODULE SWITCHER ==================== */
     function switchMode(mode) {
-      appMode = mode;
+      currentMode = mode;
+      const prayerNav = document.getElementById('prayer-nav-wrapper');
+      const bibleNav = document.getElementById('bible-nav-wrapper');
       const prayerBtn = document.getElementById('mode-prayer-btn');
       const bibleBtn = document.getElementById('mode-bible-btn');
 
       if (mode === 'prayer') {
+        prayerNav.classList.remove('hidden');
+        bibleNav.classList.add('hidden');
         prayerBtn.className = "px-3 py-1.5 rounded-lg bg-white dark:bg-stone-950 text-stone-900 dark:text-stone-100 shadow-sm transition-all";
         bibleBtn.className = "px-3 py-1.5 rounded-lg text-stone-600 dark:text-stone-400 transition-all";
-        prayerNavWrapper.classList.remove('hidden');
-        bibleNavWrapper.classList.add('hidden');
-        switchTab(activePrayerTab);
+        renderPrayer();
       } else {
+        prayerNav.classList.add('hidden');
+        bibleNav.classList.remove('hidden');
         bibleBtn.className = "px-3 py-1.5 rounded-lg bg-white dark:bg-stone-950 text-stone-900 dark:text-stone-100 shadow-sm transition-all";
         prayerBtn.className = "px-3 py-1.5 rounded-lg text-stone-600 dark:text-stone-400 transition-all";
-        prayerNavWrapper.classList.add('hidden');
-        bibleNavWrapper.classList.remove('hidden');
-        initBibleView();
+        renderBible();
       }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 4. PRAYER RENDERERS ---
-    function renderDaily() {
-      const data = PRAYER_DATA.daily;
-      let html = `
-        <div class="border-b border-stone-200 dark:border-stone-800 pb-4 text-center">
-          <h1 class="text-2xl font-bold text-stone-900 dark:text-stone-50 mb-1">${data.title}</h1>
-          <p class="text-sm font-medium text-amber-900/80 dark:text-amber-400/90 mb-2">${data.sub}</p>
-          <p class="text-xs text-stone-600 dark:text-stone-400 italic bg-amber-50/70 dark:bg-stone-900 p-2.5 rounded-xl border border-amber-200/50 dark:border-stone-800">${data.intro}</p>
-        </div>
-      `;
-
-      data.sections.forEach(sec => {
-        html += `
-          <article class="p-4 rounded-2xl bg-white dark:bg-stone-900/60 border border-stone-100 dark:border-stone-800/80 shadow-sm space-y-3">
-            <p class="leading-relaxed">
-              <span class="verse-num text-lg">${sec.num}፤</span>
-              ${sec.paragraphs.join('</p><p class="leading-relaxed">')}
-            </p>
-          </article>
-        `;
-      });
-
-      html += `
-        <div class="pt-6 border-t border-stone-200 dark:border-stone-800 text-center">
-          <button onclick="switchTab('weekly')" class="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-amber-800 to-amber-900 hover:from-amber-900 hover:to-stone-900 text-white font-bold text-sm shadow-md active:scale-98 transition-all flex items-center justify-center space-x-2">
-            <span>ወደ ዕለቱ ውዳሴ ማርያም ቀጥል</span>
-            <span class="text-amber-300">→</span>
-          </button>
-        </div>
-      `;
-
-      container.innerHTML = html;
-    }
-
-    function renderWeekly(dayKey) {
-      const data = PRAYER_DATA.weekly[dayKey];
-      let html = `
-        <div class="border-b border-stone-200 dark:border-stone-800 pb-4 text-center">
-          <span class="text-xs uppercase tracking-wider font-semibold text-amber-700 dark:text-amber-400">የዕለቱ ውዳሴ</span>
-          <h1 class="text-2xl font-bold text-stone-900 dark:text-stone-50 mt-1">${data.title}</h1>
-        </div>
-      `;
-
-      data.verses.forEach(verse => {
-        html += `
-          <div class="p-4 rounded-2xl bg-white dark:bg-stone-900/60 border border-stone-100 dark:border-stone-800/80 shadow-sm">
-            <p class="leading-relaxed">${verse}</p>
-          </div>
-        `;
-      });
-
-      html += `
-        <div class="pt-6 border-t border-stone-200 dark:border-stone-800 grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <button onclick="switchTab('anqetse')" class="p-3.5 rounded-xl bg-amber-50 dark:bg-stone-900 border border-amber-200 dark:border-amber-900/50 text-amber-950 dark:text-amber-300 font-semibold text-sm flex items-center justify-between active:scale-98">
-            <span>ቀጥሎ፡ አንቀጸ ብርሃን</span>
-            <span>→</span>
-          </button>
-          <button onclick="switchTab('yewedeswa')" class="p-3.5 rounded-xl bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-800 dark:text-stone-300 font-semibold text-sm flex items-center justify-between active:scale-98">
-            <span>ይዌድስዋ መላእክት</span>
-            <span>→</span>
-          </button>
-        </div>
-      `;
-
-      container.innerHTML = html;
-    }
-
-    function renderAnqetse() {
-      const data = PRAYER_DATA.anqetse;
-      let html = `
-        <div class="border-b border-stone-200 dark:border-stone-800 pb-4 text-center">
-          <h1 class="text-2xl font-bold text-stone-900 dark:text-stone-50 mb-1">${data.title}</h1>
-          <p class="text-sm text-stone-500 dark:text-stone-400">${data.sub}</p>
-        </div>
-      `;
-
-      data.sections.forEach(sec => {
-        html += `
-          <article class="p-4 rounded-2xl bg-white dark:bg-stone-900/60 border border-stone-100 dark:border-stone-800/80 shadow-sm space-y-2">
-            <p class="leading-relaxed">
-              <span class="verse-num text-lg">${sec.num} ፡</span>
-              ${sec.text}
-            </p>
-          </article>
-        `;
-      });
-
-      html += `
-        <div class="pt-4 text-center">
-          <button onclick="switchTab('yewedeswa')" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-800 text-white font-semibold text-sm shadow-sm active:scale-98">
-            ወደ ይዌድስዋ መላእክት ቀጥል →
-          </button>
-        </div>
-      `;
-
-      container.innerHTML = html;
-    }
-
-    function renderYewedeswa() {
-      const data = PRAYER_DATA.yewedeswa;
-      let html = `
-        <div class="border-b border-stone-200 dark:border-stone-800 pb-4 text-center">
-          <h1 class="text-2xl font-bold text-stone-900 dark:text-stone-50 mb-1">${data.title}</h1>
-          <p class="text-sm text-stone-500 dark:text-stone-400">${data.sub}</p>
-        </div>
-      `;
-
-      data.sections.forEach(sec => {
-        if (sec.gospel) {
-          html += `
-            <article class="p-5 rounded-2xl bg-amber-50/50 dark:bg-stone-900/80 border border-amber-200/60 dark:border-amber-900/40 shadow-sm space-y-2">
-              <span class="rubric text-sm font-bold block">${sec.title}</span>
-              <p class="leading-relaxed">${sec.text}</p>
-            </article>
-          `;
-        } else {
-          html += `
-            <article class="p-4 rounded-2xl bg-white dark:bg-stone-900/60 border border-stone-100 dark:border-stone-800/80 shadow-sm">
-              <p class="leading-relaxed">
-                <span class="verse-num text-lg">${sec.num}፤</span>
-                ${sec.text}
-              </p>
-            </article>
-          `;
-        }
-      });
-
-      html += `
-        <div class="pt-4 text-center">
-          <button onclick="switchTab('intercession')" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-800 text-white font-semibold text-sm shadow-sm active:scale-98">
-            ወደ የምልጃ ጸሎት ቀጥል →
-          </button>
-        </div>
-      `;
-
-      container.innerHTML = html;
-    }
-
-    function renderIntercession() {
-      const data = PRAYER_DATA.intercession;
-      container.innerHTML = `
-        <div class="border-b border-stone-200 dark:border-stone-800 pb-4 text-center">
-          <h1 class="text-2xl font-bold text-stone-900 dark:text-stone-50 mb-1">${data.title}</h1>
-          <p class="text-sm text-stone-500 dark:text-stone-400">${data.sub}</p>
-        </div>
-
-        <article class="p-5 rounded-2xl bg-white dark:bg-stone-900/60 border border-stone-100 dark:border-stone-800/80 shadow-sm space-y-4">
-          <div class="text-amber-800 dark:text-amber-400 font-bold text-center text-lg">✝ ጸሎተ ምልጃ</div>
-          <p class="leading-loose text-justify text-base sm:text-lg">
-            ${data.body}
-          </p>
-        </article>
-
-        <div class="pt-4 text-center">
-          <button onclick="switchTab('daily')" class="text-xs font-semibold text-stone-500 dark:text-stone-400 underline p-2">
-            ወደ ዘወትር ጸሎት ተመለስ
-          </button>
-        </div>
-      `;
-    }
-
-    function initDayButtons() {
-      dayButtonsContainer.innerHTML = '';
-      const order = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
-      order.forEach(key => {
-        const btn = document.createElement('button');
-        btn.id = `day-btn-${key}`;
-        btn.textContent = PRAYER_DATA.weekly[key].name;
-        btn.className = `px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
-          key === currentDayKey 
-            ? 'bg-amber-800 text-white shadow-sm' 
-            : 'bg-stone-200/80 dark:bg-stone-800 text-stone-700 dark:text-stone-300'
-        }`;
-        btn.onclick = () => {
-          currentDayKey = key;
-          initDayButtons();
-          renderWeekly(currentDayKey);
-        };
-        dayButtonsContainer.appendChild(btn);
-      });
-    }
-
-    const prayerTabIds = ['tab-daily', 'tab-weekly', 'tab-anqetse', 'tab-yewedeswa', 'tab-intercession'];
-
+    /* ==================== PRAYER VIEW ==================== */
     function switchTab(tab) {
-      activePrayerTab = tab;
-
-      prayerTabIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (id === `tab-${tab}`) {
-          el.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white dark:bg-stone-950 text-stone-900 dark:text-stone-100 shadow-sm border border-stone-200 dark:border-stone-700 transition-all";
+      currentPrayerTab = tab;
+      const tabs = ['daily', 'weekly', 'anqetse', 'yewedeswa', 'intercession'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab-${t}`);
+        if (t === tab) {
+          btn.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-amber-800 text-white shadow-sm transition-all";
         } else {
-          el.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-stone-600 dark:text-stone-400 transition-all";
+          btn.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-all";
         }
       });
 
+      const weeklyBar = document.getElementById('weekly-selector-bar');
       if (tab === 'weekly') {
-        daySelectorBar.classList.remove('hidden');
-        initDayButtons();
-        renderWeekly(currentDayKey);
+        weeklyBar.classList.remove('hidden');
+        buildDayButtons();
       } else {
-        daySelectorBar.classList.add('hidden');
-        if (tab === 'daily') renderDaily();
-        else if (tab === 'anqetse') renderAnqetse();
-        else if (tab === 'yewedeswa') renderYewedeswa();
-        else if (tab === 'intercession') renderIntercession();
+        weeklyBar.classList.add('hidden');
       }
 
+      renderPrayer();
+    }
+
+    function buildDayButtons() {
+      const days = [
+        { id: 'mon', label: 'ሰኞ' },
+        { id: 'tue', label: 'ማክሰኞ' },
+        { id: 'wed', label: 'ረቡዕ' },
+        { id: 'thu', label: 'ሐሙስ' },
+        { id: 'fri', label: 'ዓርብ' },
+        { id: 'sat', label: 'ቅዳሜ' },
+        { id: 'sun', label: 'እሑድ' }
+      ];
+
+      const bar = document.getElementById('day-buttons-container');
+      bar.innerHTML = '';
+      days.forEach(d => {
+        const btn = document.createElement('button');
+        btn.textContent = d.label;
+        if (d.id === currentDay) {
+          btn.className = "py-1.5 px-3.5 rounded-xl text-xs font-bold bg-amber-700 text-white shadow-xs transition-all";
+        } else {
+          btn.className = "py-1.5 px-3.5 rounded-xl text-xs font-semibold bg-stone-200/80 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-300 dark:hover:bg-stone-700 transition-all";
+        }
+        btn.onclick = () => {
+          currentDay = d.id;
+          buildDayButtons();
+          renderPrayer();
+        };
+        bar.appendChild(btn);
+      });
+    }
+
+    function renderPrayer() {
+      let html = '';
+
+      if (currentPrayerTab === 'weekly') {
+        const dayData = PRAYER_DATA.weekly[currentDay];
+        html += `
+          <div class="border-b border-stone-200 dark:border-stone-800 pb-4 text-center">
+            <span class="text-xs uppercase tracking-wider font-semibold text-amber-700 dark:text-amber-400">የዕለቱ ውዳሴ</span>
+            <h1 class="text-2xl font-bold text-stone-900 dark:text-stone-50 mt-1">${dayData.name} የሚጸለይ ውዳሴ ማርያም</h1>
+            <p class="text-xs text-stone-500 dark:text-stone-400 mt-1.5 max-w-lg mx-auto">${dayData.title}</p>
+          </div>
+          <div class="space-y-4">
+        `;
+        dayData.verses.forEach(v => {
+          html += `
+            <article class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-stone-900/60 border border-stone-100 dark:border-stone-800/80 shadow-xs leading-relaxed">
+              <p class="text-stone-800 dark:text-stone-200 text-justify">${v}</p>
+            </article>
+          `;
+        });
+        html += `</div>`;
+      } else {
+        const p = PRAYER_DATA[currentPrayerTab];
+        html += `
+          <div class="border-b border-stone-200 dark:border-stone-800 pb-4 text-center">
+            <h1 class="text-2xl font-bold text-stone-900 dark:text-stone-50">${p.title}</h1>
+            <p class="text-xs text-amber-700 dark:text-amber-400 font-semibold mt-1">${p.sub}</p>
+            ${p.intro ? `<p class="text-xs text-stone-500 dark:text-stone-400 mt-1.5 italic">${p.intro}</p>` : ''}
+          </div>
+          <div class="space-y-4">
+        `;
+        p.sections.forEach(sec => {
+          html += `
+            <article class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-stone-900/60 border border-stone-100 dark:border-stone-800/80 shadow-xs leading-relaxed">
+              <span class="rubric text-base block mb-2 font-bold">${sec.num}</span>
+              <div class="space-y-3 text-stone-800 dark:text-stone-200 text-justify">
+                ${sec.paragraphs.map(para => `<p>${para}</p>`).join('')}
+              </div>
+            </article>
+          `;
+        });
+        html += `</div>`;
+      }
+
+      container.innerHTML = html;
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 5. BIBLE VIEWER & DYNAMIC FETCHER ---
-    const bookSelect = document.getElementById('bible-book-select');
-    const chapterPills = document.getElementById('bible-chapter-pills');
-
+    /* ==================== BIBLE VIEW ==================== */
     function filterBooks(testament) {
       currentTestament = testament;
       const btnOt = document.getElementById('btn-ot');
@@ -702,86 +802,85 @@
         btnOt.className = "py-2 px-4 rounded-lg text-stone-600 dark:text-stone-400 transition-all";
       }
 
-      const filtered = BIBLE_BOOKS.filter(b => b.testament === testament);
-      bookSelect.innerHTML = filtered.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
-
-      currentBookId = filtered[0].id;
+      populateBookSelect();
+      const firstBook = BIBLE_BOOKS.find(b => b.testament === testament);
+      currentBookId = firstBook.id;
       currentChapter = 1;
-      renderChapterPills();
-      loadBibleChapter(currentBookId, currentChapter);
+      populateChapterPills();
+      loadChapterContent();
     }
 
-    function initBibleView() {
-      filterBooks(currentTestament);
+    function populateBookSelect() {
+      const select = document.getElementById('bible-book-select');
+      select.innerHTML = '';
+      const books = BIBLE_BOOKS.filter(b => b.testament === currentTestament);
+      books.forEach(b => {
+        const opt = document.createElement('option');
+        opt.value = b.id;
+        opt.textContent = b.name;
+        if (b.id === currentBookId) opt.selected = true;
+        select.appendChild(opt);
+      });
     }
 
     function onBookChange(bookId) {
       currentBookId = bookId;
       currentChapter = 1;
-      renderChapterPills();
-      loadBibleChapter(currentBookId, currentChapter);
+      populateChapterPills();
+      loadChapterContent();
     }
 
-    function renderChapterPills() {
+    function populateChapterPills() {
       const book = BIBLE_BOOKS.find(b => b.id === currentBookId);
-      if (!book) return;
+      const pillsContainer = document.getElementById('bible-chapter-pills');
+      pillsContainer.innerHTML = '';
 
-      let html = '';
-      for (let c = 1; c <= book.chapters; c++) {
-        const isActive = c === currentChapter;
-        html += `
-          <button id="pill-ch-${c}" onclick="goToChapter(${c})" class="shrink-0 min-w-[2.4rem] px-3 py-1.5 rounded-xl text-xs font-bold transition-all active:scale-95 ${
-            isActive 
-              ? 'bg-amber-800 text-white shadow-md ring-2 ring-amber-700/40' 
-              : 'bg-stone-200/90 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-300 dark:hover:bg-stone-700'
-          }">
-            ${c}
-          </button>
-        `;
-      }
-      chapterPills.innerHTML = html;
-
-      // Auto-scroll active pill into view without clipping
-      setTimeout(() => {
-        const activeEl = document.getElementById(`pill-ch-${currentChapter}`);
-        if (activeEl) {
-          activeEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      for (let i = 1; i <= book.chapters; i++) {
+        const pill = document.createElement('button');
+        pill.textContent = i;
+        if (i === currentChapter) {
+          pill.className = "py-1.5 px-3.5 rounded-xl text-xs font-bold bg-amber-800 text-white shadow-xs shrink-0 transition-all";
+        } else {
+          pill.className = "py-1.5 px-3 rounded-xl text-xs font-semibold bg-stone-200/80 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-300 dark:hover:bg-stone-700 shrink-0 transition-all";
         }
-      }, 50);
+        pill.onclick = () => {
+          currentChapter = i;
+          populateChapterPills();
+          loadChapterContent();
+        };
+        pillsContainer.appendChild(pill);
+      }
     }
 
-    function goToChapter(c) {
-      currentChapter = c;
-      renderChapterPills();
-      loadBibleChapter(currentBookId, currentChapter);
+    function renderBible() {
+      populateBookSelect();
+      populateChapterPills();
+      loadChapterContent();
     }
 
-    function loadBibleChapter(bookId, chapterNum) {
-      const book = BIBLE_BOOKS.find(b => b.id === bookId);
-      const filePath = `${bookId}/${chapterNum}.htm`;
+    function loadChapterContent() {
+      const book = BIBLE_BOOKS.find(b => b.id === currentBookId);
+      const filePath = `${book.id}/${currentChapter}.htm`;
 
       container.innerHTML = `
-        <div class="py-16 text-center text-stone-400">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-amber-800 border-t-transparent mb-3"></div>
-          <p class="text-sm">ምዕራፍ ${chapterNum} በመጫን ላይ...</p>
+        <div class="py-20 text-center text-stone-400 dark:text-stone-500 text-sm">
+          ምዕራፉ በመጫን ላይ ነው...
         </div>
       `;
 
       fetch(filePath)
-        .then(response => {
-          if (!response.ok) throw new Error("ፋይሉ አልተገኘም");
-          return response.arrayBuffer();
+        .then(res => {
+          if (!res.ok) throw new Error("Network error loading chapter");
+          return res.text();
         })
-        .then(buffer => {
-          const decoder = new TextDecoder('utf-8');
-          const htmlText = decoder.decode(buffer);
-          parseAndDisplayBibleHtml(htmlText, book, chapterNum);
+        .then(htmlText => {
+          parseAndDisplayBibleHtml(htmlText, book, currentChapter);
         })
         .catch(err => {
           container.innerHTML = `
-            <div class="p-6 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 text-center space-y-3">
-              <p class="text-red-700 dark:text-red-300 font-semibold">ይህንን ምዕራፍ ማግኘት አልተቻለም (${filePath})</p>
-              <p class="text-xs text-stone-500">እባክዎ ፋይሎቹ በትክክል ከ index.htm ጋር በአንድ ፎልደር ውስጥ መቀመጣቸውን ያረጋግጡ።</p>
+            <div class="py-16 text-center text-stone-500 dark:text-stone-400">
+              <p class="text-base font-bold text-stone-800 dark:text-stone-200">ምዕራፍ ${currentChapter} አልተገኘም</p>
+              <p class="text-xs mt-1 text-stone-400">${filePath}</p>
             </div>
           `;
         });
@@ -851,29 +950,19 @@
       }
     }
 
-    // --- 6. COMMON READING CONTROLS ---
-    document.getElementById('font-increase').onclick = () => {
-      if (currentFontSize < 34) {
-        currentFontSize += 2;
-        container.style.fontSize = `${currentFontSize}px`;
-      }
-    };
-    document.getElementById('font-decrease').onclick = () => {
-      if (currentFontSize > 14) {
-        currentFontSize -= 2;
-        container.style.fontSize = `${currentFontSize}px`;
-      }
-    };
+    function goToChapter(num) {
+      currentChapter = num;
+      populateChapterPills();
+      loadChapterContent();
+    }
 
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
-    themeToggle.onclick = () => {
-      const isDark = document.documentElement.classList.toggle('dark');
-      themeIcon.textContent = isDark ? '☀️' : '🌙';
-    };
+    /* Auto-select current day of the week for Wudase Mariam */
+    const dayMap = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+    currentDay = dayMap[new Date().getDay()];
 
-    // Initialize on Daily Prayer
-    container.style.fontSize = `${currentFontSize}px`;
+    /* Initialize Application */
+    initCalendarUI();
+    initSocialLinks();
     switchTab('daily');
   </script>
 </body>
