@@ -65,15 +65,17 @@
       scrollbar-width: none;
     }
     .bible-verse-num {
-      color: #b91c1c;
+      color: #b91c1c !important;
       font-weight: 700;
-      font-size: 0.85em;
-      margin-right: 0.3rem;
-      margin-left: 0.2rem;
+      font-size: 0.88em;
+      margin-right: 0.35rem;
       display: inline-block;
     }
     .dark .bible-verse-num {
-      color: #f87171;
+      color: #f87171 !important;
+    }
+    .bible-verse-row {
+      color: inherit !important;
     }
   </style>
 </head>
@@ -1201,46 +1203,52 @@
       let bodyHtml = '';
 
       if (textBody) {
-        // Remove unwanted header elements, stray links, or unclosed images from source
-        textBody.querySelectorAll('h3, img, hr, a[href*="mp3"]').forEach(el => el.remove());
+        // Remove extraneous header elements, audio links, images, horizontal rules
+        textBody.querySelectorAll('h3, img, hr, a[href*="mp3"], audio').forEach(el => el.remove());
 
-        // Replace any existing verse markers with cleanly closed badge tags
-        let hasVerse1 = false;
-        textBody.querySelectorAll('.verse').forEach(v => {
-          const num = v.textContent.trim();
-          if (num === '1') hasVerse1 = true;
+        // Extract raw inner text or HTML and clean corrupt characters that exist in chapter 1 source files
+        let rawHtml = textBody.innerHTML;
+
+        // Clean out dangling self-closing tags like `/>` and orphaned brackets
+        rawHtml = rawHtml.replace(/\s*\/\>\s*/g, ' ');
+        rawHtml = rawHtml.replace(/\[\s*1\s*\]/g, ' ');
+
+        // Reparse cleaned HTML
+        const cleanDoc = parser.parseFromString(`<div>${rawHtml}</div>`, 'text/html');
+        const root = cleanDoc.body.firstElementChild;
+
+        // Clean dropcaps into regular text nodes
+        root.querySelectorAll('.dimver, .dropcap').forEach(dc => {
+          dc.replaceWith(document.createTextNode(dc.textContent));
+        });
+
+        // Ensure all .verse markers are cleanly replaced with formatted badges
+        let foundVerse1 = false;
+        root.querySelectorAll('.verse').forEach(v => {
+          const num = v.textContent.replace(/[^0-9]/g, '').trim();
+          if (num === '1') foundVerse1 = true;
           const badge = document.createElement('span');
           badge.className = 'bible-verse-num';
-          badge.textContent = `[${num}]`;
+          badge.textContent = num ? `[${num}]` : '';
           v.replaceWith(badge);
         });
 
-        // Clean out dropcaps and replace with regular inline text
-        textBody.querySelectorAll('.dimver, .dropcap').forEach(dc => {
-          const txtNode = document.createTextNode(dc.textContent);
-          dc.replaceWith(txtNode);
-        });
-
-        // Prepend verse 1 badge if the source file omitted it
-        if (!hasVerse1) {
-          const firstP = textBody.querySelector('p');
+        // Prepend verse 1 badge cleanly if missing
+        if (!foundVerse1) {
+          const firstP = root.querySelector('p');
+          const v1 = document.createElement('span');
+          v1.className = 'bible-verse-num';
+          v1.textContent = '[1]';
           if (firstP) {
-            const v1Badge = document.createElement('span');
-            v1Badge.className = 'bible-verse-num';
-            v1Badge.textContent = '[1]';
             firstP.prepend(' ');
-            firstP.prepend(v1Badge);
+            firstP.prepend(v1);
           } else {
-            const v1Badge = document.createElement('span');
-            v1Badge.className = 'bible-verse-num';
-            v1Badge.textContent = '[1]';
-            textBody.prepend(' ');
-            textBody.prepend(v1Badge);
+            root.prepend(' ');
+            root.prepend(v1);
           }
         }
 
-        // Clean up any stray `/>` that leaked from unclosed source tags
-        bodyHtml = textBody.innerHTML.replace(/\s*\/\>\s*/g, ' ').trim();
+        bodyHtml = root.innerHTML.trim();
       } else {
         bodyHtml = "<p>ጽሑፉን ማሳየት አልተቻለም።</p>";
       }
@@ -1267,7 +1275,7 @@
           </audio>
         </div>
 
-        <article class="p-5 sm:p-6 rounded-2xl bg-white dark:bg-stone-900/60 border border-stone-100 dark:border-stone-800/80 shadow-sm leading-relaxed text-justify">
+        <article class="p-5 sm:p-6 rounded-2xl bg-white dark:bg-stone-900/60 border border-stone-100 dark:border-stone-800/80 shadow-sm leading-relaxed text-justify text-stone-900 dark:text-stone-100">
           ${bodyHtml}
         </article>
 
